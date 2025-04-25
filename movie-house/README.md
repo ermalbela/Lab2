@@ -10,3 +10,27 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+
+
+
+=============================================================================================================
+=============================================================================================================
+=============================================================================================================
+======================================== PROJECT REQUESTS ===================================================
+
+1.Data Exporting and Importing: Implementoni funksionalitete për eksportimin dhe importimin e të
+dhënave për të paktën tre lista të ndryshme brenda aplikacionit (p.sh., përdoruesit, porositë, raportet).
+Formate të mbështetura: CSV, Excel, JSON.
+
+2.Authentication and Authorization: Implementoni një sistem të sigurt autentikimi dhe autorizimi duke
+përdorur praktikat më të mira të industrisë. Përdorni refresh dhe access tokens për të menaxhuar
+sesionet e përdoruesve dhe për të siguruar kontrollin e aksesit.
+
+3.Advanced Search Functionality: Përmirësoni aplikacionin duke shtuar aftësi të avancuara kërkimi me
+filtra, renditje dhe kërkim me tekst të plotë. Kërkimi duhet të mbështesë të paktën pesë lista të
+ndryshme, duke siguruar qasje të plotë në të dhëna nga entitete të ndryshme brenda aplikacionit.
+
+=============================================================================================================
+=============================================================================================================
+=============================================================================================================
