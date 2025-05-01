@@ -1,36 +1,15 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import man from '../assets/images/man.png'
 import { MENUITEMS } from '../Menu';
 import { Link } from 'react-router-dom';
 import { Settings } from 'react-feather';
+import AuthContext from '../_helper/AuthContext';
 
 const Sidebar = () => {
 
-  const toggletNavActive = (item) => {
+  const {role} = useContext(AuthContext);
 
-    if (!item.active) {
-      MENUITEMS.map((a) => {
-        a.Items.filter((Items) => {
-          if (a.Items.includes(item)) Items.active = false;
-          if (!Items.children) return false;
-          Items.children.forEach((b) => {
-            if (Items.children.includes(item)) {
-              b.active = false;
-            }
-            if (!b.children) return false;
-            b.children.forEach((c) => {
-              if (b.children.includes(item)) {
-                c.active = false;
-              }
-            });
-          });
-          return Items;
-        });
-        return a;
-      });
-    }
-    item.active = !item.active;
-  };
+  const [activePath, setActivePath] = useState('/');
 
   return (
     <div className="main-sidebar">
@@ -39,8 +18,8 @@ const Sidebar = () => {
       </Link>
       <div className="user-wrapper">
         <img src={man} alt="user" className="user-profile" />
-        <h4>User Name</h4>
-        <h5 style={{color: 'green'}}>User</h5>
+        <h4>{JSON.parse(localStorage.getItem('name')) || "User Name"}</h4>
+        <h5 style={role == 'Superadmin' ? {color: 'darkred'} : role == 'Admin' ? {color: 'orange'} : {color : 'green'}}>{role || "User"}</h5>
       </div>
       <div className="bar-item-wrapper custom-scrollbar">
         {MENUITEMS.map(item => (
@@ -49,8 +28,8 @@ const Sidebar = () => {
               to={menuItem.path}
               id="nav-link"
               key={idx}
-              className={`bar-item ${menuItem.active ? 'active' : ''}`}
-              onClick={() => toggletNavActive(menuItem)}
+              className={`bar-item ${activePath === menuItem.path ? 'active' : ''}`}
+              onClick={() => setActivePath(menuItem.path)}
             >
               {menuItem.icon !== undefined && <menuItem.icon className='icon'/>}
               <span>{menuItem.title}</span>

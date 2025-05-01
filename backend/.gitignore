@@ -1,0 +1,99 @@
+## Build results
+/bin/
+/obj/
+[Ll]og/
+*.log
+
+## User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vscode/
+.vs/
+
+## Rider IDE
+.idea/
+*.sln.iml
+
+## Visual Studio Code settings
+.vscode/
+
+## Build artifacts
+*.dll
+*.exe
+*.app
+*.so
+*.dylib
+*.lib
+*.pdb
+
+## NuGet packages
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+*.nuspec
+
+## Other package managers
+node_modules/
+
+## Dotnet CLI
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## ASP.NET Core secrets (stored outside project by default)
+secrets.json
+
+## Entity Framework Migrations
+Migrations/
+
+## Logs & Diagnostics
+*.log
+*.tlog
+*.svclog
+
+## Coverage & Testing
+coverage/
+TestResults/
+*.coverage
+*.coveragexml
+*.testsettings
+*.vsmdi
+
+## Reports
+*.report.xml
+*.sln.cache
+
+## Publish & deploy
+.publish/
+wwwroot/lib/
+
+## Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+## Others
+_ReSharper*/
+*.resharper
+*.DotSettings.user
+*.cache
+*.dbmdl
+*.jfm
+
+## OS-specific
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+## Security
+.env
+*.key
+*.crt
+*.pem
+*.http

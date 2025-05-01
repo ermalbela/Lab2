@@ -41,7 +41,14 @@
   width: 30px;
   stroke-width: 2.5px;
   animation: rotateInSetting 1.5s ease infinite;
-  color: darkgrey;
+  color: #6c757d;
+}
+
+.setting-primary:hover{
+  background-color: #e9ecef;
+  > svg{
+    color: #212529;
+  }
 }
 
 .main-sidebar{
@@ -97,6 +104,7 @@
   max-width: 100%;
   position: relative;
   padding: 25px 11px;
+  margin-bottom: 3px;
   margin-left: 16px;
   height: 29px;
   display: flex;
@@ -104,6 +112,11 @@
   cursor: pointer;
   transition: 0.3s ease-in-out;
   border-radius: 10px;
+}
+
+.bar-item-wrapper a span{
+  font-weight: 500;
+  margin-left: 7px;
 }
 
 a.active{
@@ -129,7 +142,7 @@ a.active{
   overflow: scroll;
   padding-bottom: 15px;
   overflow-x: hidden;
-  height: calc(100vh - 213px);
+  height: calc(100vh - 293px);
 }
 
 .user-profile{
@@ -141,11 +154,13 @@ a.active{
 
 .user-wrapper h4{
   margin: 1rem 0 0 0;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .user-wrapper h5{
   margin: 0.5rem 0.5rem;
+  font-weight: 700;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {

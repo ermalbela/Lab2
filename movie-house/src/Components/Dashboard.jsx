@@ -7,6 +7,10 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
 
 
+  const handleClick = () => {
+    console.log(123);
+  }
+
   return isLoading ? (
     <Loader />
   ) : (
@@ -21,7 +25,7 @@ const Dashboard = () => {
           <Button>Rate Movie</Button>
           </Col>
           <Col className='d-flex justify-content-end'>
-            <Button className='admin-buttons'>Add Movie</Button>
+            <Button className='admin-buttons' onClick={() => handleClick()}>Add Movie</Button>
           </Col>
         </Row>
       </CardHeader>
