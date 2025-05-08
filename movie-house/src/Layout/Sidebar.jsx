@@ -4,15 +4,17 @@ import { MENUITEMS } from '../Menu';
 import { Link } from 'react-router-dom';
 import { Settings } from 'react-feather';
 import AuthContext from '../_helper/AuthContext';
+import CustomizerContext from '../_helper/CustomizerContext';
 
 const Sidebar = () => {
 
   const {role} = useContext(AuthContext);
+  const {toggle} = useContext(CustomizerContext);
 
   const [activePath, setActivePath] = useState('/');
 
   return (
-    <div className="main-sidebar">
+    <div className={`main-sidebar ${toggle ? 'closed-sidebar' : ''}`}>
       <Link className="setting-primary" to={`/settings`}>
         <Settings />
       </Link>

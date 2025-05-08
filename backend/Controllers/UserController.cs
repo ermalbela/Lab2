@@ -124,6 +124,7 @@ namespace backend.Controllers
             try
             {
                 await signInManager.SignOutAsync();
+                Response.Cookies.Delete("token");
             }
             catch (Exception ex)
             {
