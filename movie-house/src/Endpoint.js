@@ -3,3 +3,6 @@ export const registerUser = userApi + 'register';
 export const loginUser = userApi + 'login';
 export const getRole = userApi + 'user-role';
 export const logout = userApi + 'logout';
+
+const movieApi = 'http://localhost:5064/api/movies/';
+export const getMovies = movieApi + 'get_movies';

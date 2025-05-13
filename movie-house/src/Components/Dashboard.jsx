@@ -1,15 +1,33 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Loader from '../Layout/Loader'
 import { Card, CardHeader, CardBody, Row, Col, Button } from 'react-bootstrap'
 import MovieCard from '../CommonElements/MovieCard';
+import axios from 'axios';
+import { getMovies } from '../Endpoint';
+import MovieContext from '../_helper/MovieContext';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [movies, setMovies] = useState([]);
+  const {movieProps, setMovieProps} = useContext(MovieContext);
+  console.log(movieProps);
+  
+  useEffect(() =>  {
+    async function fetchData(){
+      const response = await axios.get(getMovies);
+      setMovies(response.data);
+      console.log(response.data);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, []);
+  
 
-
-  const handleClick = () => {
-    console.log(123);
+  const handleClick = () => {  
   }
+
+  const history = useNavigate();
 
   return isLoading ? (
     <Loader />
@@ -39,7 +57,16 @@ const Dashboard = () => {
               <CardBody className="d-flex flex-column">
                 <div className='offers flex-grow-1'>
                   <Row className="g-4">
-                    <Col sm={3} className="d-flex">
+                    {movies.map((movie, idx) => (
+                      <Col sm={3} className="d-flex" key={idx} onClick={(e) => {
+                        e.preventDefault();
+                        setMovieProps([movie][0]);
+                        history('/movie_watcher');
+                      }}>
+                        <MovieCard props={movie} />
+                      </Col>
+                    ))}
+                    {/* <Col sm={3} className="d-flex">
                       <MovieCard />
                     </Col>
                     <Col sm={3} className="d-flex">
@@ -50,7 +77,7 @@ const Dashboard = () => {
                     </Col>
                     <Col sm={3} className="d-flex">
                       <MovieCard />
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
               </CardBody>

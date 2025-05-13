@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import Routers from './Route'
 import AuthContext from './_helper/AuthContext';
 import CustomizerContext from './_helper/CustomizerContext';
+import MovieContext from './_helper/MovieContext';
 
 function App() {
 
@@ -10,12 +11,17 @@ function App() {
 
   const [toggle, setToggle] = useState(false);
   const toggleValue = useMemo(() => ({toggle, setToggle}), [toggle, setToggle]);
+  
+  const [movieProps, setMovieProps] = useState([]);
+  const moviePropsValue = useMemo(() => ({movieProps, setMovieProps}), [movieProps, setMovieProps]);
 
   return (
     <div className="App">
       <AuthContext.Provider value={roleValue}>
         <CustomizerContext.Provider value={toggleValue}>
-          <Routers />
+          <MovieContext.Provider value={moviePropsValue}>
+            <Routers />
+          </MovieContext.Provider>
         </CustomizerContext.Provider>
       </AuthContext.Provider>
     </div>
