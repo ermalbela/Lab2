@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace backend
 {
@@ -29,8 +31,18 @@ namespace backend
             builder.Services.AddControllers();
             builder.Services.AddAuthorization();
             builder.Services.AddDbContext<ApplicationDbContext>(options => {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("SqlDb"));
             });
+
+            // MongoDB settings configuration
+            builder.Services.Configure<DatabaseSettings>(
+                builder.Configuration.GetSection("MongoDbSettings"));
+
+            // Register MongoDB client as a singleton
+            builder.Services.AddSingleton<IMongoClient>(s =>
+                new MongoClient(builder.Configuration.GetConnectionString("MongoDb")));
+
+            builder.Services.AddSingleton<MovieService>();
 
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<ApplicationDbContext>();
 
