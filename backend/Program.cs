@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace backend
 {
@@ -84,6 +86,27 @@ namespace backend
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+
+            app.UseStaticFiles(); // This allows serving wwwroot and other static files
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(builder.Environment.ContentRootPath, "Images")),
+                RequestPath = "/Images"
+            });
+
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".mp4"] = "video/mp4";
+            provider.Mappings[".mov"] = "video/quicktime";
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(builder.Environment.ContentRootPath, "Videos")),
+                RequestPath = "/Videos",
+                ContentTypeProvider = provider
+            });
 
             app.UseRouting();
 

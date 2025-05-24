@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../src/assets/css/main.css';
 import '../src/assets/css/sidebar.css';
 import '../src/assets/css/login.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 createRoot(document.getElementById('root')).render(
     <App />

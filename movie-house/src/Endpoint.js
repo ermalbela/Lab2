@@ -6,3 +6,4 @@ export const logout = userApi + 'logout';
 
 const movieApi = 'http://localhost:5064/api/movies/';
 export const getMovies = movieApi + 'get_movies';
+export const addMovie = movieApi + 'create_movie';

@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models
 {
@@ -8,7 +9,7 @@ namespace backend.Models
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         [BsonElement("title")]
         public string Title { get; set; } = null!;
@@ -25,6 +26,20 @@ namespace backend.Models
         [BsonElement("poster")]
         public string Poster { get; set; } = null!;
 
+        [BsonElement("imagefile")]
+        [BsonIgnore]
+        public IFormFile ImageFile { get; set; }
+
+        [BsonElement("imagename")]
+        public string ImageName { get; set; }
+
+        [BsonElement("videofile")]
+        [BsonIgnore]
+        public IFormFile VideoFile { get; set; }
+
+        [BsonElement("videoname")]
+        public string VideoName { get; set; }
+
         [BsonElement("languages")]
         public List<string> Languages { get; set; } = new();
 
@@ -33,5 +48,8 @@ namespace backend.Models
 
         [BsonElement("directors")]
         public List<string> Directors { get; set; } = new();
+
+        [BsonElement("video")]
+        public string Video { get; set; }
     }
 }
