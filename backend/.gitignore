@@ -153,7 +153,7 @@ Migrations/
 ScaffoldingReadMe.txt
 
 # Configuration files
-appsettings.json
+./appsettings.json
 secrets.json
 appsettings*.json
 
