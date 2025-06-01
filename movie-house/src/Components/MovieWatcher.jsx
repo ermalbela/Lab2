@@ -23,13 +23,23 @@ const MovieWatcher = () => {
   console.log(movieProps);
 
   async function fetchComments(){
-    const response = await axios.get(getComments + movieProps?.id);
+    const response = await axios.get(getComments + movieProps?.id, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+      },
+      withCredentials: true
+   });
     setComments(response.data);
     console.log(response.data);
   }
 
   async function fetchFavorites(){
-    const response = await axios.get(getFavorites + JSON.parse(localStorage.getItem('userId')))
+    const response = await axios.get(getFavorites + JSON.parse(localStorage.getItem('userId')), {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+      },
+      withCredentials: true
+   })
     setIsFavorite(response.data.some(favorite => favorite.movieId === movieProps.id) ? true : false);
     console.log(response.data);
   }
@@ -55,7 +65,12 @@ const MovieWatcher = () => {
 
 
   const toggleFavorite = async () => {
-    await axios.post(toggleFavoriteApi, {MovieId: movieProps.id, UserId: JSON.parse(localStorage.getItem('userId'))})
+    await axios.post(toggleFavoriteApi, {MovieId: movieProps.id, UserId: JSON.parse(localStorage.getItem('userId'), {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+      },
+      withCredentials: true
+   })})
     .then(res => {
       console.log(res.data);
       setIsFavorite(res.data.some(favorite => favorite.movieId === movieProps.id) ? true : false);

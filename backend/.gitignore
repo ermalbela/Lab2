@@ -156,6 +156,7 @@ ScaffoldingReadMe.txt
 ./appsettings.json
 secrets.json
 appsettings*.json
+appsettings.json
 
 # Docker
 **/*.db

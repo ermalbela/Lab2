@@ -135,7 +135,12 @@ const MovieForm = (formProps) => {
     };
   
     async function fetchData(){
-      const response = await axios.get(getMovies);
+      const response = await axios.get(getMovies, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+      },
+      withCredentials: true
+   });
       formProps.setMovies(response.data);
       console.log(response.data);
   }

@@ -1,5 +1,6 @@
 ﻿using backend.Data;
 using backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace backend.Controllers
 {
     [Route("api/users")]
     [ApiController]
+
     public class UserController : ControllerBase
     {
         private readonly SignInManager<User> signInManager;
@@ -50,7 +52,7 @@ namespace backend.Controllers
                     Name = user.Name,
                     Email = user.Email,
                     UserName = user.UserName,
-                    Role = "Superadmin",
+                    Role = "User",
                     Status = user.Status
                 };
 

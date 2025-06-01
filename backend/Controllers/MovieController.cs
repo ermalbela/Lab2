@@ -8,9 +8,11 @@ using Microsoft.Extensions.Hosting;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/movies")]
+[Authorize]
 public class MovieController : ControllerBase
 {
     private readonly IMongoCollection<Movie> _movies;

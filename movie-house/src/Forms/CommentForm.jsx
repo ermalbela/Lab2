@@ -23,7 +23,12 @@ const CommentForm = (formProps) => {
     }
     console.log(finalVals);
 
-    axios.post(addComment, {Content: comment, UserId: userId, MovieId: movieId, CreatedAt: new Date().toISOString(), UserName: userName})
+    axios.post(addComment, {Content: comment, UserId: userId, MovieId: movieId, CreatedAt: new Date().toISOString(), UserName: userName}, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+      },
+      withCredentials: true
+   })
     .then(res => {
       Swal.fire('Success!', res?.data?.message , 'success')
       formProps.setAddComent(false);

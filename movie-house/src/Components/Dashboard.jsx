@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
 import CustomPagination from '../CommonElements/Pagination'
 import CommonModal from '../CommonElements/CommonModal';
 import MovieForm from '../Forms/MovieForm';
+import AuthContext from '../_helper/AuthContext';
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -41,7 +42,6 @@ const Dashboard = () => {
   
   const [movie, setMovie] = useState(initialData);
   const history = useNavigate();
-  
 
   const [currentPage, setCurrentPage] = useState(1);
   const moviesPerPage = 10;
@@ -52,7 +52,12 @@ const Dashboard = () => {
   let filteredPaginationMovies = movies?.slice(firstVisitIndex, lastVisitIndex);
 
   async function fetchData(){
-    const response = await axios.get(getMovies);
+    const response = await axios.get(getMovies, {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+      },
+      withCredentials: true
+   });
     setMovies(response.data);
     console.log(response.data);
     setIsLoading(false);
@@ -221,7 +226,7 @@ const Dashboard = () => {
   //   }
   //   return errors;
   // }
-  
+  const {role} = useContext(AuthContext)
   return isLoading ? (
     <Loader isLoading={isLoading}/>
   ) : (
@@ -233,8 +238,8 @@ const Dashboard = () => {
       <CardHeader>
         <Row className='justify-content-between'>
           <Col className='d-flex justify-content-end'>
-            <Button className='admin-buttons' onClick={() => setCreateMovie(true)}>Add Movie</Button>
-          </Col>
+            {role === 'Superadmin' ? <Button className='admin-buttons' onClick={() => setCreateMovie(true)}>Add Movie</Button> : ''}          
+            </Col>
         </Row>
       </CardHeader>
       <CardBody>

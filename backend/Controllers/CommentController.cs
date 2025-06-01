@@ -1,4 +1,5 @@
 ﻿using backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -7,6 +8,7 @@ namespace backend.Controllers
 {
     [ApiController]
     [Route("api/comments")]
+    [Authorize]
     public class CommentController : Controller
     {
         private readonly IMongoCollection<Comment> _comments;

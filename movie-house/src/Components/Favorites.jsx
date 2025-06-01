@@ -14,7 +14,12 @@ const Favorites = () => {
   const {movieProps, setMovieProps} = useContext(MovieContext);
 
   async function fetchAllFavorites(){
-    const response = await axios.get(getAllFavorites + JSON.parse(localStorage.getItem('userId')))
+    const response = await axios.get(getAllFavorites + JSON.parse(localStorage.getItem('userId')), {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+      },
+      withCredentials: true
+   })
     console.log(response.data);
     setFavorites(response.data);
     setIsLoading(false);
