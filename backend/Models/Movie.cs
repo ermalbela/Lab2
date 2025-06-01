@@ -51,5 +51,11 @@ namespace backend.Models
 
         [BsonElement("video")]
         public string Video { get; set; }
+
+        [BsonElement("averageRating")]
+        public double AverageRating { get; set; } = 0;
+
+        [BsonElement("ratingCount")]
+        public int RatingCount { get; set; } = 0;
     }
 }

@@ -1,20 +1,22 @@
 import { Fragment, useState, useEffect } from 'react';
 import React from 'react';
 
-const Loader = () => {
-
+const Loader = ({isLoading}) => {
   const [show, setShow] = useState(true);
 
   useEffect(() => {
-       const timeout = setTimeout(() => {
-          setShow(false);
-      }, 1500);
+    let timeout;
 
-      return () => {
-        clearTimeout(timeout);
-      };
+    if (isLoading) {
+      // Show loader immediately
+      setShow(true);
+    } else {
+      // Hide loader after 1 second delay
+      timeout = setTimeout(() => setShow(false), 1000);
+    }
 
-  }, [show]);
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
 
   return (
     <Fragment>

@@ -1,4 +1,4 @@
-import {Home, Star} from 'react-feather';
+import {Home, Star, CheckSquare} from 'react-feather';
 
 export const MENUITEMS = [
     {
@@ -12,7 +12,7 @@ export const MENUITEMS = [
             title: 'Favorite Movies', icon: Star, type: 'link', path: `/favorites`
           },
           {
-            title: 'Dashboard', icon: Home, type: 'link', path: `/asdasd`
+            title: 'Watch Later', icon: CheckSquare, type: 'link', path: `/watch_later`
           },
           {
             title: 'Dashboard', icon: Home, type: 'link', path: `/asdasdasd`

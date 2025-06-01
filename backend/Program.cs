@@ -44,8 +44,6 @@ namespace backend
             builder.Services.AddSingleton<IMongoClient>(s =>
                 new MongoClient(builder.Configuration.GetConnectionString("MongoDb")));
 
-            builder.Services.AddSingleton<MovieService>();
-
             builder.Services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddIdentityCore<User>(options => {

@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -12,12 +14,28 @@ namespace backend.Controllers
 {
     [Route("api/users")]
     [ApiController]
-    public class UserController(SignInManager<User> sm, UserManager<User> um, IConfiguration config, ApplicationDbContext context) : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly SignInManager<User> signInManager = sm;
-        private readonly UserManager<User> userManager = um;
-        private readonly IConfiguration _config = config;
-        private readonly ApplicationDbContext _context = context;
+        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
+        private readonly IConfiguration _config;
+        private readonly ApplicationDbContext _context;
+        private readonly IMongoCollection<Movie> _movies;
+
+        public UserController(SignInManager<User> sm, UserManager<User> um, IConfiguration config, ApplicationDbContext context)
+        {
+            signInManager = sm;
+            userManager = um;
+            _config = config;
+            _context = context;
+
+            // MongoDB setup like in your MovieController
+            var client = new MongoClient(_config.GetConnectionString("MongoDb"));
+            var database = client.GetDatabase(_config["MongoDbSettings:DatabaseName"]);
+            _movies = database.GetCollection<Movie>(_config["MongoDbSettings:CollectionName"]);
+        }
+
+
 
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser(User user)
@@ -186,5 +204,62 @@ namespace backend.Controllers
                 return Unauthorized();
             }
         }
+
+        [HttpPost("toggle_favorite")]
+        public async Task<IActionResult> ToggleFavorite(FavoriteRequest request)
+        {
+            var user = await userManager.Users.Include(u => u.Favorites).FirstOrDefaultAsync(u => u.Id == request.UserId);
+
+            if (user == null)
+                return NotFound("User not found");
+
+            var existingFavorite = user.Favorites.FirstOrDefault(f => f.MovieId == request.MovieId);
+            if (existingFavorite != null)
+            {
+                user.Favorites.Remove(existingFavorite);
+            }
+            else
+            {
+                user.Favorites.Add(new UserFavorite { MovieId = request.MovieId, UserId = request.UserId });
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok(user.Favorites);
+        }
+
+        [HttpGet("favorites/{userId}")]
+        public async Task<IActionResult> GetFavorites(string userId)
+        {
+            var user = await userManager.Users.Include(u => u.Favorites).FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(user.Favorites);
+        }
+
+        [HttpGet("get_all_favorites/{userId}")]
+        public async Task<IActionResult> GetFavoriteMovies(string userId)
+        {
+            var user = await userManager.Users
+                .Include(u => u.Favorites)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+                return NotFound("User not found");
+
+            var movieIds = user.Favorites.Select(f => f.MovieId).ToList();
+
+            var filter = Builders<Movie>.Filter.In(m => m.Id, movieIds);
+            var favoriteMovies = await _movies.Find(filter).ToListAsync();
+
+            return Ok(favoriteMovies);
+        }
     }
+
+        public class FavoriteRequest
+        {
+            public string UserId { get; set; }
+            public string MovieId { get; set; }
+        }
 }

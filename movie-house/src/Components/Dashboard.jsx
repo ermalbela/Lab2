@@ -13,6 +13,8 @@ import moment from 'moment/moment';
 import { components } from 'react-select';
 import Swal from 'sweetalert2';
 import CustomPagination from '../CommonElements/Pagination'
+import CommonModal from '../CommonElements/CommonModal';
+import MovieForm from '../Forms/MovieForm';
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -59,170 +61,169 @@ const Dashboard = () => {
     fetchData();
   }, []);
   
-  const handleChange = (e) => {
-    const {name, value} = e.target;
-    setMovie({...movie, [name]: value})
-  }
+  // const handleChange = (e) => {
+  //   const {name, value} = e.target;
+  //   setMovie({...movie, [name]: value})
+  // }
 
-  const Option = props => {
-    return (
-      <div>
-        <components.Option {...props}>
-          <input
-            type="checkbox"
-            checked={props.isSelected}
-            onChange={() => null}
-          />{" "}
-          <label>{props.label}</label>
-        </components.Option>
-      </div>
-    );
-  };
+  // const Option = props => {
+  //   return (
+  //     <div>
+  //       <components.Option {...props}>
+  //         <input
+  //           type="checkbox"
+  //           checked={props.isSelected}
+  //           onChange={() => null}
+  //         />{" "}
+  //         <label>{props.label}</label>
+  //       </components.Option>
+  //     </div>
+  //   );
+  // };
 
-  const MultiValue = props => (
-    <components.MultiValue {...props}>
-      <p>{props.data.label}</p>
-    </components.MultiValue>
-  );
+  // const MultiValue = props => (
+  //   <components.MultiValue {...props}>
+  //     <p>{props.data.label}</p>
+  //   </components.MultiValue>
+  // );
 
-  const customStyles = { // Customizing react-select styles 
-    container: (provided) => ({
-      ...provided,
-      borderColor: 'rgb(164, 206, 212);',
-      borderRadius: '4px',
-      borderStyle: 'solid',
-      borderWidth: '1px'
-    }),
-    control: (provided) => ({
-      ...provided,
-      width: '100%',
-      overflowX: 'auto',
-      whiteSpace: 'nowrap',
-    }),
-    valueContainer: (provided) => ({
-      ...provided,
-      display: 'flex',
-      flexWrap: 'nowrap',
-      overflowX: 'auto',
-      whiteSpace: 'nowrap',
-      msOverflowStyle: 'auto',
-    }),
-    multiValue: (provided) => ({
-      ...provided,
-      marginRight: '4px',
-      maxHeight: '30px',
-      margin: 0,
-      minWidth: 'unset',
-      height: '25px',
-      padding: 0,
-      alignItems: 'center'
-    }),
-    multiValueRemove: (provided) => ({
-      ...provided,
-      height: '100%'
-    }),
-    menu: (provided) => ({
-      ...provided,
-      borderRadius: '8px',
-      overflow: 'hidden'
-    }),
-    option: (styles, {isFocused, isSelected}) => {
-      return{
-        ...styles,
-        backgroundColor: isSelected ? '#6ea4c2' : isFocused ? '#cee6e2' : '#fff',
-        color: !isSelected ? '#000' : isSelected || isFocused ? '#000' : '',
-        borderRadius: '5px'
-      }
-    }
-  }
+  // const customStyles = { // Customizing react-select styles 
+  //   container: (provided) => ({
+  //     ...provided,
+  //     borderColor: 'rgb(164, 206, 212);',
+  //     borderRadius: '4px',
+  //     borderStyle: 'solid',
+  //     borderWidth: '1px'
+  //   }),
+  //   control: (provided) => ({
+  //     ...provided,
+  //     width: '100%',
+  //     overflowX: 'auto',
+  //     whiteSpace: 'nowrap',
+  //   }),
+  //   valueContainer: (provided) => ({
+  //     ...provided,
+  //     display: 'flex',
+  //     flexWrap: 'nowrap',
+  //     overflowX: 'auto',
+  //     whiteSpace: 'nowrap',
+  //     msOverflowStyle: 'auto',
+  //   }),
+  //   multiValue: (provided) => ({
+  //     ...provided,
+  //     marginRight: '4px',
+  //     maxHeight: '30px',
+  //     margin: 0,
+  //     minWidth: 'unset',
+  //     height: '25px',
+  //     padding: 0,
+  //     alignItems: 'center'
+  //   }),
+  //   multiValueRemove: (provided) => ({
+  //     ...provided,
+  //     height: '100%'
+  //   }),
+  //   menu: (provided) => ({
+  //     ...provided,
+  //     borderRadius: '8px',
+  //     overflow: 'hidden'
+  //   }),
+  //   option: (styles, {isFocused, isSelected}) => {
+  //     return{
+  //       ...styles,
+  //       backgroundColor: isSelected ? '#6ea4c2' : isFocused ? '#cee6e2' : '#fff',
+  //       color: !isSelected ? '#000' : isSelected || isFocused ? '#000' : '',
+  //       borderRadius: '5px'
+  //     }
+  //   }
+  // }
 
-  const showPreview = e => {
-    if(e.target.files && e.target.files[0]){
-      let imageFile = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = x => {
-        setMovie({...movie, poster: x.target.result, imageFile, imageName: imageFile.name});
-      }
-      reader.readAsDataURL(imageFile);
-    } else{
-      setMovie({...movie, poster: ''})
-    }
-  }
+  // const showPreview = e => {
+  //   if(e.target.files && e.target.files[0]){
+  //     let imageFile = e.target.files[0];
+  //     const reader = new FileReader();
+  //     reader.onload = x => {
+  //       setMovie({...movie, poster: x.target.result, imageFile, imageName: imageFile.name});
+  //     }
+  //     reader.readAsDataURL(imageFile);
+  //   } else{
+  //     setMovie({...movie, poster: ''})
+  //   }
+  // }
 
-  const showVideoPreview = e => {
-    if (e.target.files && e.target.files[0]) {
-      let videoFile = e.target.files[0];
-      const reader = new FileReader();
-      reader.onload = x => {
-        setMovie({...movie, video: x.target.result, videoFile, videoName: videoFile.name});
-      };
-      reader.readAsDataURL(videoFile);
-    } else {
-      setMovie({ ...movie, video: '' });
-    }
-  };
+  // const showVideoPreview = e => {
+  //   if (e.target.files && e.target.files[0]) {
+  //     let videoFile = e.target.files[0];
+  //     const reader = new FileReader();
+  //     reader.onload = x => {
+  //       setMovie({...movie, video: x.target.result, videoFile, videoName: videoFile.name});
+  //     };
+  //     reader.readAsDataURL(videoFile);
+  //   } else {
+  //     setMovie({ ...movie, video: '' });
+  //   }
+  // };
 
-  const handleClick = (movie) => {
-    const formData = new FormData();
-    formData.append("title", movie.title);
-    formData.append("plot", movie.plot);
-    movie.genres.forEach(g => formData.append("genres", g.value));
-    movie.actors.forEach(a => formData.append("actors", a.value));
-    movie.directors.forEach(d => formData.append("directors", d.value));
-    movie.languages.forEach(l => formData.append("languages", l.value));
-    formData.append("Released",new Date(movie.released).toISOString());
-    formData.append("poster", 'http://localhost:5064/' + movie.imageName); //image source
-    formData.append("video", 'http://localhost:5064/' + movie.videoName); //video source
-    formData.append('ImageFile', movie.imageFile);
-    formData.append('ImageName', movie.imageName);
-    formData.append('VideoFile', movie.videoFile);
-    formData.append('VideoName', movie.videoName);
+  // const handleClick = (movie) => {
+  //   const formData = new FormData();
+  //   formData.append("title", movie.title);
+  //   formData.append("plot", movie.plot);
+  //   movie.genres.forEach(g => formData.append("genres", g.value));
+  //   movie.actors.forEach(a => formData.append("actors", a.value));
+  //   movie.directors.forEach(d => formData.append("directors", d.value));
+  //   movie.languages.forEach(l => formData.append("languages", l.value));
+  //   formData.append("Released",new Date(movie.released).toISOString());
+  //   formData.append("poster", 'http://localhost:5064/' + movie.imageName); //image source
+  //   formData.append("video", 'http://localhost:5064/' + movie.videoName); //video source
+  //   formData.append('ImageFile', movie.imageFile);
+  //   formData.append('ImageName', movie.imageName);
+  //   formData.append('VideoFile', movie.videoFile);
+  //   formData.append('VideoName', movie.videoName);
 
-    console.log(movie)
-    axios.post(addMovie, formData)
-    .then(data => {
-      Swal.fire('Success', 'Movie added successfully', 'success');
-      setCreateMovie(false);
-      console.log(data)
-      fetchData();
-    })  
-  }
+  //   console.log(movie)
+  //   axios.post(addMovie, formData)
+  //   .then(data => {
+  //     Swal.fire('Success', 'Movie added successfully', 'success');
+  //     setCreateMovie(false);
+  //     console.log(data)
+  //     fetchData();
+  //   })  
+  // }
   
-   const validate = (vals) => {
-    const errors = {};
-    if(!patterns.name.test(vals.name)){
-      errors.name = 'Enter a valid Company Name!';
-    }
-    if(!patterns.name.test(vals.originCountry)){
-      errors.originCountry = 'Enter a valid Origin Country!';
-    }
-    if(!patterns.name.test(vals.destinationCountry)){
-      errors.destinationCountry = 'Enter a valid Destination Country!';
-    }
-    if(vals.tickets < 50){
-      errors.tickets = 'Ticket number should be bigger than 50!';
-    }
-    if(vals.ticketPrice < 40){
-      errors.ticketPrice = 'Ticket price should be bigger than 40!';
-    }
-    if(vals.date == '' || vals.date == undefined){
-      errors.date = 'Please choose a date!';
-    }
-    if(vals.arrival == '' || vals.arrival == undefined){
-      errors.arrival = 'Please choose a valid Arrival!';
-    }
-    if(vals.departure == '' || vals.departure == undefined){
-      errors.departure = 'Please choose a valid Departure!';
-    }
-    if(vals.selectedPlane == null || vals.selectedPlane == '' || vals.selectedPlane == 'Select Plane'){
-      errors.selectedPlane = 'Please choose a Plane!';
-    }
-    return errors;
-  }
-  
+  //  const validate = (vals) => {
+  //   const errors = {};
+  //   if(!patterns.name.test(vals.name)){
+  //     errors.name = 'Enter a valid Company Name!';
+  //   }
+  //   if(!patterns.name.test(vals.originCountry)){
+  //     errors.originCountry = 'Enter a valid Origin Country!';
+  //   }
+  //   if(!patterns.name.test(vals.destinationCountry)){
+  //     errors.destinationCountry = 'Enter a valid Destination Country!';
+  //   }
+  //   if(vals.tickets < 50){
+  //     errors.tickets = 'Ticket number should be bigger than 50!';
+  //   }
+  //   if(vals.ticketPrice < 40){
+  //     errors.ticketPrice = 'Ticket price should be bigger than 40!';
+  //   }
+  //   if(vals.date == '' || vals.date == undefined){
+  //     errors.date = 'Please choose a date!';
+  //   }
+  //   if(vals.arrival == '' || vals.arrival == undefined){
+  //     errors.arrival = 'Please choose a valid Arrival!';
+  //   }
+  //   if(vals.departure == '' || vals.departure == undefined){
+  //     errors.departure = 'Please choose a valid Departure!';
+  //   }
+  //   if(vals.selectedPlane == null || vals.selectedPlane == '' || vals.selectedPlane == 'Select Plane'){
+  //     errors.selectedPlane = 'Please choose a Plane!';
+  //   }
+  //   return errors;
+  // }
   
   return isLoading ? (
-    <Loader />
+    <Loader isLoading={isLoading}/>
   ) : (
     <>
     <div className="title">
@@ -257,20 +258,24 @@ const Dashboard = () => {
                     ))}
                   </Row>
                 </div>
+
+                <Row className="justify-content-center mt-4">
+                  <CustomPagination totalUnits={movies.length} unitsPerPage={moviesPerPage} setTheCurrentPage={setCurrentPage} currentPage={currentPage} />
+                </Row>
               </CardBody>
             </Card>
           </Col>
         </Row>
 
         {/* Create Movie Modal */}
-        <Modal size="lg" show={createMovie} onHide={() => setCreateMovie(false)} aria-labelledby="example-modal-sizes-title-lg">
+        {/* <Modal size="lg" show={createMovie} onHide={() => setCreateMovie(false)} aria-labelledby="example-modal-sizes-title-lg">
           <Modal.Header>
             <Modal.Title id="example-modal-sizes-title-lg">
               Create Movie
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <Form className="d-flex justify-content-center flex-column">
+          <Modal.Body> */}
+            {/* <Form className="d-flex justify-content-center flex-column">
               <Col className='d-flex justify-content-between'>
                 <FormGroup className='formGroup modal-inputs'>
                   <FormLabel>Movie Title</FormLabel>
@@ -406,17 +411,20 @@ const Dashboard = () => {
                 </FormGroup>
               </Col>
               <FormGroup className='formGroup d-flex justify-content-between'>
-                {/* <Button className='admin-buttons' onClick={() => addRandom()}>ADD RANDOM</Button> */}
                 <Button variant='secondary' onClick={() => setCreateMovie(false)}>Close</Button>
                 <Button className="admin-buttons" onClick={() => handleClick(movie)}>Create Movie</Button>
-                {/* <Button className="admin-buttons" onClick={() => handleClick(createMovie, movie)}>Create Movie</Button> */}
               </FormGroup>
-            </Form>
-          </Modal.Body>
-        </Modal>
-        <Row className="justify-content-center">
-          <CustomPagination totalMovies={movies.length} moviesPerPage={moviesPerPage} setTheCurrentPage={setCurrentPage} currentPage={currentPage} />
-        </Row>
+            </Form> */}
+          {/* </Modal.Body> */}
+        {/* </Modal> */}
+        <CommonModal
+          size="lg"
+          show={createMovie}
+          onHide={() => setCreateMovie(false)}
+          title={"Create Movie"}
+          FormComponent={MovieForm}
+          formProps={{setCreateMovie, setMovies}}
+        />
       </CardBody>
     </Card>
     </>

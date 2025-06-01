@@ -1,9 +1,9 @@
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
 
-const CustomPagination = ({ totalMovies, moviesPerPage, setTheCurrentPage, currentPage }) => {
+const CustomPagination = ({ totalUnits, unitsPerPage, setTheCurrentPage, currentPage }) => {
   let pages = [];
-  for (let i = 1; i <= Math.ceil(totalMovies / moviesPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(totalUnits / unitsPerPage); i++) {
     pages.push(i);
   }
 
@@ -24,7 +24,7 @@ const CustomPagination = ({ totalMovies, moviesPerPage, setTheCurrentPage, curre
       ))}
       <Pagination.Next
         onClick={() => setTheCurrentPage(currentPage + 1)}
-        disabled={currentPage === Math.ceil(totalMovies / moviesPerPage)}
+        disabled={currentPage === Math.ceil(totalUnits / unitsPerPage)}
       />
     </Pagination>
   );

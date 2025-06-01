@@ -5,5 +5,7 @@
         public string CollectionName { get; set; }
         public string DatabaseName { get; set; }
         public string Connection { get; set; }
+        public string CommentsCollectionName { get; set; } = null!;
+
     }
 }

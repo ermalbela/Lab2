@@ -21,5 +21,8 @@ namespace backend.Models
 
         public string Status { get; set; }
         public string? Role { get; set; }
+        public ICollection<UserFavorite> Favorites { get; set; } = [];
+        public ICollection<UserWatchLater> WatchLater { get; set; } = [];
+
     }
 }

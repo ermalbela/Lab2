@@ -43,7 +43,7 @@ public class MovieController : ControllerBase
     public ActionResult<Movie> Get(string id)
     {
         var movie = _movies.Find(m => m.Id == id).FirstOrDefault();
-
+        
         if (movie == null)
         {
             return NotFound($"Movie with ID {id} not found.");
@@ -104,6 +104,8 @@ public class MovieController : ControllerBase
             return BadRequest($"Failed to create movie: {ex.Message}");
         }
     }
+
+
 
     [NonAction]
     public void DeleteImage(string imageName)
