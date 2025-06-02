@@ -145,16 +145,16 @@ const MovieWatcher = () => {
             </CardHeader>
             <CardBody>
               {comments && comments.length > 0 ? (
-                <Row className="g-3 align-items-stretch">
+                <Row className="g-4 align-items-stretch">
                   {filteredPaginationComments.map((comment, idx) => (
-                    <Col key={idx} md={4} className="d-flex">
-                      <Card className="h-100 w-100" style={{ minHeight: "250px" }}>
-                        <CardHeader>
-                          <h6>{comment.userName}</h6>
+                    <Col key={idx} md={6} lg={4} className="d-flex" style={{height: '250px'}}>
+                      <Card className="comment-card h-100 w-100">
+                        <CardHeader className="comment-card-header">
+                          <h6 className="mb-0" style={{color: '#24695c'}}>{comment.userName}</h6>
                         </CardHeader>
-                        <CardBody className="d-flex flex-column justify-content-between flex-grow-1 pt-0 pb-3">
-                          <p className="mb-2">{comment.content}</p>
-                          <div className="text-muted text-end mt-auto" style={{ fontSize: "0.85rem" }}>
+                        <CardBody className="d-flex flex-column justify-content-between flex-grow-1 mt-0 pt-0">
+                          <p className="comment-content flex-grow-1">{comment.content}</p>
+                          <div className="comment-timestamp text-end">
                             {new Date(comment.createdAt).toLocaleString()}
                           </div>
                         </CardBody>
@@ -163,7 +163,7 @@ const MovieWatcher = () => {
                   ))}
                 </Row>
               ) : (
-                <p className="text-muted">No comments yet...</p>
+                <p className="text-muted text-center">No comments yet...</p>
               )}
 
               <Row className="justify-content-center mt-4">

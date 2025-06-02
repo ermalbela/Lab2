@@ -159,19 +159,6 @@ nav > .container{
   --bs-pagination-focus-color: #000;
 }
 
-
-/* .react-select__value-container::-webkit-scrollbar, .react-select__menu-list::-webkit-scrollbar-thumb {
-  width: 5px!important;
-  height: 5px!important;
-  background-color: transparent!important;
-}
-.react-select__value-container::-webkit-scrollbar-thumb, .react-select__menu-list::-webkit-scrollbar {
-  border-radius: 10px!important;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1)!important;
-  background-color: #e6edef!important;
-}
- */
-
 .react-select__value-container::-webkit-scrollbar, .react-select__menu-list::-webkit-scrollbar, .form-textarea::-webkit-scrollbar{
   width: 5px!important;
   height: 5px!important;
@@ -248,6 +235,89 @@ nav > .container{
 
 .react-datepicker-wrapper{
   width: 100%;
+}
+
+.comment-card {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  background-color: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comment-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+.comment-card-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.comment-content {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.comment-timestamp {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: #24695c;
+  pointer-events: none;
+}
+
+.searchInput {
+  padding-left: 2.5rem !important; /* ensure space for icon */
+  margin-left: 1rem;
+  border: none!important;
+  border-bottom: #e6edef 1px solid!important;
+  border-radius: 0;
+}
+
+.list-of-menu-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 0 0 0.5rem 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-left: 1rem;
+}
+
+.list-of-menu-item {
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #f1f1f1;
+  cursor: pointer;
+}
+
+.list-of-menu-item:hover {
+  background-color: #f8f9fa;
+}
+
+.list-of-menu-image {
+  width: 100%;
+  max-width: 60px;
+  max-height: 60px;
+  object-fit: cover;
+  background-position: center;
 }
 
 @media screen and (width < 800px) {

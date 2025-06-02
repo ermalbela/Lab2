@@ -253,7 +253,15 @@ namespace backend.Controllers
             var movieIds = user.Favorites.Select(f => f.MovieId).ToList();
 
             var filter = Builders<Movie>.Filter.In(m => m.Id, movieIds);
+            
+            
             var favoriteMovies = await _movies.Find(filter).ToListAsync();
+            
+            foreach (var movie in favoriteMovies)
+            {
+                movie.Poster = String.Format("http://localhost:5064/Images/{0}", movie.ImageName);
+                movie.Video = String.Format("http://localhost:5064/Videos/{0}", movie.VideoName);
+            }
 
             return Ok(favoriteMovies);
         }
