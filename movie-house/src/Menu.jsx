@@ -24,6 +24,12 @@ export const MENUITEMS = [
         type: "link",
         path: `/watch_later`,
       },
+      // {
+      //   title: "Account Settings",
+      //   icon: Star,
+      //   type: "link",
+      //   path: `/account`,
+      // },
       {
         title: "Dashboard",
         icon: Home,

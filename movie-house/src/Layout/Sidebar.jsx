@@ -16,7 +16,7 @@ const Sidebar = () => {
 
   return (
     <div className={`main-sidebar ${toggle ? 'closed-sidebar' : ''}`}>
-      <Link className="setting-primary" to={`/settings`}>
+      <Link className="setting-primary" to={`/account`}>
         <Settings />
       </Link>
       <div className="user-wrapper">

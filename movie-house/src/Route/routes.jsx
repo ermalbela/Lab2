@@ -3,6 +3,7 @@ import Favorites from "../Components/Favorites";
 import Login from "../Components/Login";
 import MovieWatcher from "../Components/MovieWatcher";
 import Register from "../Components/Register";
+import AccountSettings from "../Components/AccountSettings";
 
 export const routes = [
   {path: '/', Component: <Dashboard />, name: 'Dashboard'},
@@ -10,5 +11,7 @@ export const routes = [
   {path: '/login', Component: <Register />, name: 'Register'},
   {path: '/movie_watcher', Component: <MovieWatcher />, name: 'MovieWatcher'},
   {path: '/favorites', Component: <Favorites />, name: 'Favorites'},
+  {path: '/account', Component: <AccountSettings />, name: 'AccountSettings' },
+  
   
 ]

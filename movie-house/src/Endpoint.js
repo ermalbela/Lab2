@@ -14,3 +14,7 @@ export const addMovie = movieApi + 'create_movie';
 const commentApi = 'http://localhost:5064/api/comments/';
 export const addComment = commentApi + 'add_comment';
 export const getComments = commentApi + 'get_comments/'
+
+const profileApi = 'http://localhost:5064/api/profile/';
+export const getProfile = profileApi;
+export const updateProfile = profileApi;
