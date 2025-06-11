@@ -1,16 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 const AccountSettings = () => {
   const [email, setEmail] = useState("");
   const [originalEmail, setOriginalEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [status, setStatus] = useState(localStorage.getItem("status") || "Active" );
-  const [originalStatus, setOriginalStatus] = useState(localStorage.getItem("status") || "Active" );
+  const [status, setStatus] = useState(JSON.parse(localStorage.getItem('status')));
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const statusOptions = ["Active", "Do Not Disturb", "Away", "Offline"];
+  const dropdownRef = useRef(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // close dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -26,11 +40,11 @@ const AccountSettings = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(response.data);
 
         setEmail(response.data.email);
         setOriginalEmail(response.data.email);
-        setStatus(response.data.status || "Active");
-        setOriginalStatus(response.data.status || "Active");
+        // setStatus(response.data.status || "Active");
       } catch (err) {
         setError("Failed to fetch profile");
         console.error("Profile fetch error:", err);
@@ -49,7 +63,6 @@ const AccountSettings = () => {
   const handleCancelClick = () => {
     setEmail(originalEmail);
     setPassword("");
-    setStatus(originalStatus);
     setIsEditing(false);
     setError(null);
     setSuccessMsg(null);
@@ -80,10 +93,12 @@ const AccountSettings = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-      ).then(data => console.log(data));
+      ).then(res => {
+        console.log(res.data)
+        localStorage.setItem('status', JSON.stringify(status));
+      });
 
       setOriginalEmail(email);
-      setOriginalStatus(status);
       setPassword("");
       setIsEditing(false);
       setSuccessMsg("Profile updated successfully!");
@@ -166,25 +181,69 @@ const AccountSettings = () => {
       <label htmlFor="status" style={{ display: "block", marginTop: "20px", marginBottom: "8px", fontWeight: "600" }}>
         Status:
       </label>
-      <select
-        id="status"
-        value={status}
-        onChange={(e) => setStatus(e.target.value)}
-        disabled={!isEditing}
+      <div
+        ref={dropdownRef}
         style={{
+          position: "relative",
           width: "100%",
-          padding: "10px",
-          fontSize: "1rem",
-          borderRadius: "4px",
-          border: isEditing ? "1px solid #007bff" : "1px solid #ccc",
-          backgroundColor: isEditing ? "#fff" : "#e9ecef",
+          cursor: isEditing ? "pointer" : "not-allowed",
+          userSelect: "none",
         }}
       >
-        <option value="Active">Active</option>
-        <option value="Do Not Disturb">Do Not Disturb</option>
-        <option value="Away">Away</option>
-        <option value="Offline">Offline</option>
-      </select>
+        <div
+          onClick={() => isEditing && setIsDropdownOpen(!isDropdownOpen)}
+          style={{
+            padding: "10px",
+            fontSize: "1rem",
+            borderRadius: "4px",
+            border: isEditing ? "1px solid #007bff" : "1px solid #ccc",
+            backgroundColor: isEditing ? "#fff" : "#e9ecef",
+            color: "#333",
+          }}
+        >
+          {status || "Select status"}
+        </div>
+
+        {isEditing && isDropdownOpen && (
+          <ul
+            style={{
+              position: "absolute",
+              top: "100%",
+              left: 0,
+              right: 0,
+              zIndex: 1000,
+              backgroundColor: "#fff",
+              border: "1px solid #ccc",
+              borderTop: "none",
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              borderRadius: "0 0 4px 4px",
+              maxHeight: "150px",
+              overflowY: "auto",
+            }}
+          >
+            {statusOptions.map((option) => (
+              <li
+                key={option}
+                onClick={() => {
+                  setStatus(option);
+                  setIsDropdownOpen(false);
+                }}
+                style={{
+                  padding: "10px",
+                  backgroundColor: option === status ? "#f1f1f1" : "#fff",
+                  cursor: "pointer",
+                  borderBottom: "1px solid #eee",
+                }}
+              >
+                {option}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
 
       {/* Buttons */}
       <div style={{ marginTop: "20px" }}>
