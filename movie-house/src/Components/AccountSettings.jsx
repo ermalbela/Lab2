@@ -4,6 +4,9 @@ import axios from "axios";
 const AccountSettings = () => {
   const [email, setEmail] = useState("");
   const [originalEmail, setOriginalEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState(localStorage.getItem("status") || "Active" );
+  const [originalStatus, setOriginalStatus] = useState(localStorage.getItem("status") || "Active" );
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
@@ -26,6 +29,8 @@ const AccountSettings = () => {
 
         setEmail(response.data.email);
         setOriginalEmail(response.data.email);
+        setStatus(response.data.status || "Active");
+        setOriginalStatus(response.data.status || "Active");
       } catch (err) {
         setError("Failed to fetch profile");
         console.error("Profile fetch error:", err);
@@ -43,6 +48,8 @@ const AccountSettings = () => {
 
   const handleCancelClick = () => {
     setEmail(originalEmail);
+    setPassword("");
+    setStatus(originalStatus);
     setIsEditing(false);
     setError(null);
     setSuccessMsg(null);
@@ -61,23 +68,28 @@ const AccountSettings = () => {
         return;
       }
 
-      // Call your profile update endpoint (adjust URL if needed)
       await axios.put(
         "http://localhost:5064/api/profile",
-        { email },
+        {
+          email,
+          newPassword: password || "",
+          status,
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
-      );
+      ).then(data => console.log(data));
 
       setOriginalEmail(email);
+      setOriginalStatus(status);
+      setPassword("");
       setIsEditing(false);
-      setSuccessMsg("Email updated successfully!");
+      setSuccessMsg("Profile updated successfully!");
     } catch (err) {
-      setError("Failed to update email.");
-      console.error("Email update error:", err);
+      setError("Failed to update profile.");
+      console.error("Profile update error:", err);
     } finally {
       setLoading(false);
     }
@@ -105,10 +117,9 @@ const AccountSettings = () => {
       }}
     >
       <h2 style={{ marginBottom: "20px", color: "#333" }}>Account Settings</h2>
-      <label
-        htmlFor="email"
-        style={{ display: "block", marginBottom: "8px", fontWeight: "600" }}
-      >
+
+      {/* Email */}
+      <label htmlFor="email" style={{ display: "block", marginBottom: "8px", fontWeight: "600" }}>
         Email:
       </label>
       <input
@@ -127,6 +138,55 @@ const AccountSettings = () => {
         }}
       />
 
+      {/* Password */}
+      {isEditing && (
+        <>
+          <label htmlFor="password" style={{ display: "block", marginTop: "20px", marginBottom: "8px", fontWeight: "600" }}>
+            New Password:
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Leave blank to keep current"
+            style={{
+              width: "100%",
+              padding: "10px",
+              fontSize: "1rem",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+              backgroundColor: "#fff",
+            }}
+          />
+        </>
+      )}
+
+      {/* Status */}
+      <label htmlFor="status" style={{ display: "block", marginTop: "20px", marginBottom: "8px", fontWeight: "600" }}>
+        Status:
+      </label>
+      <select
+        id="status"
+        value={status}
+        onChange={(e) => setStatus(e.target.value)}
+        disabled={!isEditing}
+        style={{
+          width: "100%",
+          padding: "10px",
+          fontSize: "1rem",
+          borderRadius: "4px",
+          border: isEditing ? "1px solid #007bff" : "1px solid #ccc",
+          backgroundColor: isEditing ? "#fff" : "#e9ecef",
+        }}
+      >
+        <option value="Active">Active</option>
+        <option value="Do Not Disturb">Do Not Disturb</option>
+        <option value="Away">Away</option>
+        <option value="Offline">Offline</option>
+      </select>
+
+      {/* Buttons */}
       <div style={{ marginTop: "20px" }}>
         {!isEditing ? (
           <button
@@ -178,14 +238,7 @@ const AccountSettings = () => {
       </div>
 
       {successMsg && (
-        <div
-          style={{
-            marginTop: "15px",
-            color: "green",
-            fontWeight: "600",
-            fontSize: "0.9rem",
-          }}
-        >
+        <div style={{ marginTop: "15px", color: "green", fontWeight: "600", fontSize: "0.9rem" }}>
           {successMsg}
         </div>
       )}

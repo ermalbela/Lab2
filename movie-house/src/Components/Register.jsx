@@ -51,7 +51,7 @@ const Register = () => {
     setErrors(validate(user));
     if(patterns.userName.test(user.userName) && patterns.password.test(user.password)){
       try{
-        axios.post(registerUser, {Name: user.userName, Email: user.email, UserName: user.userName, PasswordHash: user.password, Status: 'Online'})
+        axios.post(registerUser, {Name: user.userName, Email: user.email, UserName: user.userName, PasswordHash: user.password, Status: 'Active'})
         .then((res) => {
           Swal.fire({
             title: res?.data?.message || "Registered Successfully!",

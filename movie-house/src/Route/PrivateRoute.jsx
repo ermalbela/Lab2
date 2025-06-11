@@ -20,6 +20,7 @@ const PrivateRoute = () => {
       localStorage.removeItem('token');
       localStorage.removeItem('name');
       localStorage.removeItem('userId');
+      localStorage.removeItem('status');
       setRole([]);
     });
     setRole(response?.data?.role);

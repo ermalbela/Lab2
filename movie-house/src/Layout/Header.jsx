@@ -90,6 +90,7 @@ const Header = () => {
             localStorage.removeItem('name');
             localStorage.removeItem('userId');
             localStorage.removeItem('token');
+              localStorage.removeItem('status');
             setRole('');
 
             document.cookie = "token=; Max-Age=0; path=/;";            

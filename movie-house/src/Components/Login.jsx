@@ -59,6 +59,7 @@ const Login = () => {
         localStorage.setItem('name', JSON.stringify(res.data.updateResult.name));
         localStorage.setItem('userId', JSON.stringify(res.data.updateResult.id));
         localStorage.setItem('token', JSON.stringify(res.data.tokenString));
+        localStorage.setItem('status', JSON.stringify(res.data.updateResult.status));
 
         const Toast = Swal.mixin({
           toast: true,
