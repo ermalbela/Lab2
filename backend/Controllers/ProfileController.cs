@@ -33,8 +33,9 @@ namespace backend.Controllers
             return Ok(new { email = user.Email });
         }
 
+       
         [HttpPut]
-        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest model)
+           public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest model)
         {
             var user = await GetUserFromToken();
             if (user == null)
@@ -43,21 +44,25 @@ namespace backend.Controllers
             if (!string.IsNullOrEmpty(model.Email))
                 user.Email = model.Email;
 
+            if (!string.IsNullOrEmpty(model.Status))
+                user.Status = model.Status;
+
             IdentityResult result = IdentityResult.Success;
 
             if (!string.IsNullOrEmpty(model.NewPassword))
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
                 result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
-            }
 
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
+                if (!result.Succeeded)
+                    return BadRequest(result.Errors);
+            }
 
             await _userManager.UpdateAsync(user);
 
-            return Ok(new { message = "Profile updated successfully." });
+            return Ok(new { user , message = "Profile updated successfully." });
         }
+
 
         private async Task<User?> GetUserFromToken()
         {
@@ -96,7 +101,10 @@ namespace backend.Controllers
 
     public class UpdateProfileRequest
     {
-        public string Email { get; set; }
-        public string NewPassword { get; set; }
+      
+            public string Email { get; set; }
+            public string NewPassword { get; set; }
+            public string Status { get; set; }
+        }
     }
-}
+
