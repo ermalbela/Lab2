@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { getProfile, updateProfile } from "../Endpoint";
 
 const AccountSettings = () => {
   const [email, setEmail] = useState("");
@@ -35,7 +36,7 @@ const AccountSettings = () => {
           return;
         }
 
-        const response = await axios.get("http://localhost:5064/api/profile", {
+        const response = await axios.get(getProfile, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -82,7 +83,7 @@ const AccountSettings = () => {
       }
 
       await axios.put(
-        "http://localhost:5064/api/profile",
+        updateProfile,
         {
           email,
           newPassword: password || "",

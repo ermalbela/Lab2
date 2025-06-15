@@ -9,6 +9,20 @@ body > * {
   font-variant-numeric:tabular-nums;
 }
 
+.left-header{
+  display: flex;
+  max-width: 290px;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #e6edef;
+  height: 100%;
+  box-shadow: 0 0 20px rgba(25, 124, 207, 0.08);
+}
+
+.navbar-brand{
+  margin-left: 73px;
+}
+
 .card{
   margin-bottom: 30px;
   border: 1px solid #e6edef!important;
@@ -37,6 +51,8 @@ body > * {
   transition: 0.5s;
   background-color: #fff;
   box-shadow: 0 0 20px rgba(25, 124, 207, 0.08);
+  height: 76px;
+  padding: 0;
 }
 
 nav > .container{
@@ -49,6 +65,7 @@ nav > .container{
 
 .logout-button{
   color: #fff!important;
+  min-width: max-content!important;
 }
 
 .nav-link{
@@ -68,9 +85,68 @@ nav > .container{
   transition: ease-in-out 0.4s;
 }
 
+.right-header-icon-wrapper{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 30px;
+  height: 30px;
+  border-radius: 15%;
+  margin-right: 5%;
+}
+
+.right-header-icon{
+  width: 30px;
+  margin: 0 6px;
+  transition: all 0.3s ease;
+}
+
+.right-header-icon-wrapper:hover{
+  background-color: rgba(36, 105, 92, 0.1);
+}
+
+.right-header-icon-wrapper:active{
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .closed-page-wrapper{
   margin: 6rem 5rem 2rem!important;
 }
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-dot.Online {
+  background-color: green;
+}
+
+.status-dot.Offline {
+  background-color: gray;
+}
+
+.status-dot.Disturb {
+  background-color: red;
+}
+
+.status-dot.Away {
+  background-color: orange;
+}
+
+.status-text {
+  color: #555;
+}
+
 
 .invalidFeedback{
   color: red;
@@ -100,6 +176,10 @@ nav > .container{
   height: 100%;
   min-height: 300px;
   cursor: pointer;
+}
+
+.movie-card-wrapper .card-body{
+  background-color: transparent!important;
 }
 
 .movie-card-img{
@@ -319,6 +399,169 @@ nav > .container{
   object-fit: cover;
   background-position: center;
 }
+
+
+/*############################
+#####DARK ONLY CSS START######
+############################*/
+
+body.dark-only {
+  background-color: #202938!important;
+  color: #fff!important;
+  
+  .main-sidebar, .card, .card-body, .card-header, .modal-body, .modal-header .title, .navbar, .searchInput, .search-icon{
+    background-color: #111727;
+    color: #fff;
+  }
+  .bar-item, .searchInput::placeholder{
+    color: #fff!important;
+  }
+  .setting-primary svg{
+    color: #918686;
+  }
+  .main-sidebar  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #f5f7fb!important;
+    box-shadow: inset 0 0 0 10px;
+  }
+  .card, .best-mixes-wrapper, .modal-body, .modal-header{
+    box-shadow: 1px 1px 2px 1px rgba(29, 28, 28, 0.08)!important;
+    border: 1px solid rgba(255, 255, 255, 0.2)!important;
+  }
+  .main-sidebar{
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+  .main-sidebar .user-wrapper{
+    box-shadow: 1px 1px 2px 1px rgba(29, 28, 28, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .main-nav{
+    border-bottom: 1px solid rgba(36, 105, 92, 0.2);
+    box-shadow: 0 0 20px rgba(25, 124, 207, 0.08);
+  }
+  .bar-item-wrapper  li  a{
+    color: white;
+    .icon-wrapper {
+      filter: invert(1);
+    }
+  }
+  .left-header{
+    background-color: #111727;
+    box-shadow: 1px 1px 2px 1px rgba(29, 28, 28, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    >.navbar-brand{
+      color: white;
+    }
+  }
+  .right-header li a{
+    color: black;
+  }
+  .toggle{
+    filter: brightness(100);
+  }
+  .add-form-input, .edit-form-input{
+    background: #202938;
+    border: 1px solid rgba(36, 105, 92, 0.2)!important;
+    color: #fff!important;
+  }
+  .add-form-input:focus-visible, .edit-form-input:focus-visible{
+    outline:#111727 auto 1px!important;
+  }
+  .maximize, .action-mixes{
+    filter: invert(1);
+  }
+  .toggle{
+    filter: brightness(10);
+  }
+  .best-mixes-review{
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  .modal-content, .edit-modal-content{
+    border: none;
+  }
+  .dropdown-content{
+    background-color: #202938!important;
+    border: 1px solid rgba(36, 105, 92, 0.2);
+    box-shadow: 0 0 20px rgba(25, 124, 207, 0.08);
+    >*{
+      color: white!important;
+    }
+
+  }
+  .dropdown-content .dropdownItem{
+    background-color: #202938;
+
+  }
+  .dropdown-content .dropdownItem:hover{
+    background-color: #19212f;
+  }
+
+  .footer{
+    background-color: #111727;
+    border-top: 1px solid rgba(36, 105, 92, 0.2);
+  }
+}
+/*#########################
+######DARK ONLY CSS END####
+#########################*/
+
+
+
+/*#########################
+#####MIX THEME CSS START###
+#########################*/
+body.mix-theme{
+  background-color: #f5f7fb;
+  .main-sidebar{
+    background-color: #111727;
+    color: #fff;
+  }
+  .bar-item{
+    color: #fff;
+  }
+  .setting-primary svg{
+    color: #918686;
+  }
+  .main-sidebar  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #f5f7fb!important;
+    box-shadow: inset 0 0 0 10px;
+  }
+  .main-sidebar{
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+  .main-sidebar .user-wrapper{
+    box-shadow: 1px 1px 2px 1px rgba(29, 28, 28, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .main-nav{
+    border-bottom: 1px solid rgba(36, 105, 92, 0.2);
+    box-shadow: 0 0 20px rgba(25, 124, 207, 0.08);
+  }
+  .bar-item-wrapper  li  a{
+    color: white;
+    .icon-wrapper {
+      filter: invert(1);
+    }
+  }
+  .left-header{
+    background-color: #111727;
+    box-shadow: 1px 1px 2px 1px rgba(29, 28, 28, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    >.navbar-brand{
+      color: white;
+    }
+  }
+  .right-header li a{
+    color: black;
+  }
+  .toggle{
+    filter: brightness(100);
+  }
+}
+/*#########################
+#####MIX THEME CSS END#####
+#########################*/
 
 @media screen and (width < 800px) {
   .page-wrapper{

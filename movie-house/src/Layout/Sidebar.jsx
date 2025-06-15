@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import man from '../assets/images/man.png'
 import { MENUITEMS } from '../Menu';
 import { Link } from 'react-router-dom';
-import { ChevronDown, Settings } from 'react-feather';
+import { Settings } from 'react-feather';
 import AuthContext from '../_helper/AuthContext';
 import CustomizerContext from '../_helper/CustomizerContext';
 
@@ -12,7 +12,7 @@ const Sidebar = () => {
   const {toggle} = useContext(CustomizerContext);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [activePath, setActivePath] = useState('/');
-
+  const [status, setStatus] = useState(JSON.parse(localStorage.getItem('status')));
 
   return (
     <div className={`main-sidebar ${toggle ? 'closed-sidebar' : ''}`}>
@@ -23,6 +23,10 @@ const Sidebar = () => {
         <img src={man} alt="user" className="user-profile" />
         <h4>{JSON.parse(localStorage.getItem('name')) || "User Name"}</h4>
         <h5 style={role == 'Superadmin' ? {color: 'darkred'} : role == 'Admin' ? {color: 'orange'} : {color : 'green'}}>{role || "User"}</h5>
+          <div className="status-indicator">
+            <span className={"status-dot " + status}></span>
+            <span className='status-text'>{status}</span>
+          </div>
       </div>
       <div className="bar-item-wrapper custom-scrollbar">
         {MENUITEMS.map(item =>
