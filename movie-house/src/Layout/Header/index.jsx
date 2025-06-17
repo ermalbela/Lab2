@@ -11,7 +11,6 @@ import { Search } from "react-feather";
 import ListOfMenu from "../ListOfMenu";
 import Rightbar from "./RightBar";
 
-
 const Header = () => {
 
   const {toggle, setToggle} = useContext(CustomizerContext);
@@ -111,7 +110,7 @@ const Header = () => {
               placeholder="Search here"
             />
             {isFocused && searchValue && (
-              <div className="list-of-menu-dropdown">
+              <div className="list-of-menu-dropdown custom-scrollbar">
                 <ListOfMenu searchResult={searchResult} setSearchValue={setSearchValue} setSearchToggle={setSearchToggle} />
               </div>
             )}

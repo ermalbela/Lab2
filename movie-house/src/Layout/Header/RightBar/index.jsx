@@ -5,6 +5,7 @@ import MoonLight from "./MoonLight";
 import { Button, NavLink } from "react-bootstrap";
 import AuthContext from "../../../_helper/AuthContext";
 import { logout } from "../../../Endpoint";
+import axios from "axios";
 
 const Rightbar = () => {
   const {setRole} = useContext(AuthContext);
