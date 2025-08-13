@@ -41,6 +41,30 @@ public class MovieController : ControllerBase
         return Ok(movies);
     }
 
+    [HttpGet("filter_movies")]
+    public async Task<ActionResult<List<Movie>>> GetMoviesByGenre([FromQuery] string genre)
+    {
+        if (string.IsNullOrWhiteSpace(genre))
+            return BadRequest("Genre is required.");
+
+        // Case-insensitive filter on the Genres array
+        var filter = Builders<Movie>.Filter.AnyEq(m => m.Genres, genre);
+
+        var movies = await _movies.Find(filter).ToListAsync();
+
+        if (!movies.Any())
+            return NotFound($"No movies found for genre '{genre}'.");
+
+        foreach (var movie in movies)
+        {
+            movie.Poster = $"http://localhost:5064/Images/{movie.ImageName}";
+            movie.Video = $"http://localhost:5064/Videos/{movie.VideoName}";
+        }
+
+        return Ok(movies);
+    }
+
+
     [HttpGet("get_movie/{id}")]
     public ActionResult<Movie> Get(string id)
     {

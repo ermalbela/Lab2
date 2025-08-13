@@ -76,7 +76,7 @@ const Header = () => {
     const items = [];
     setSearchValue(keyword);
     movies.map(movie => {
-      if(movie.title.toLowerCase().includes(keyword)){
+      if(movie.title.toLowerCase().includes(keyword.toLowerCase())){
         items.push(movie);
       }
       setSearchResult(items);

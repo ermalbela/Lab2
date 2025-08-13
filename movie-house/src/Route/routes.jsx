@@ -4,6 +4,7 @@ import Login from "../Components/Login";
 import MovieWatcher from "../Components/MovieWatcher";
 import Register from "../Components/Register";
 import AccountSettings from "../Components/AccountSettings";
+import FilteredMovies from "../Components/FilteredMovies";
 
 export const routes = [
   {path: '/', Component: <Dashboard />, name: 'Dashboard'},
@@ -12,6 +13,6 @@ export const routes = [
   {path: '/movie_watcher', Component: <MovieWatcher />, name: 'MovieWatcher'},
   {path: '/favorites', Component: <Favorites />, name: 'Favorites'},
   {path: '/account', Component: <AccountSettings />, name: 'AccountSettings' },
-  
+  {path: '/filter_movies', Component: <FilteredMovies />, name: 'FilteredMovies'}
   
 ]

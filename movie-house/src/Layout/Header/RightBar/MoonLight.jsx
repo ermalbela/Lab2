@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Sun, Moon, Layers } from 'react-feather';
+import { Sun, Moon} from 'react-feather';
+import mix from '../../../assets/images/light-to-dark.png'
 
 const MoonLight = () => {
   const [theme, setTheme] = useState(() => {
@@ -33,9 +34,9 @@ const MoonLight = () => {
       case 'light-only':
         return <Moon className="right-header-icon" />;
       case 'dark-only':
-        return <Sun className="right-header-icon" />;
+        return <img src={mix} className="right-header-icon mix_img" />;
       default:
-        return <Layers className="right-header-icon" />;
+        return <Sun className="right-header-icon" />;
     }
   };
 

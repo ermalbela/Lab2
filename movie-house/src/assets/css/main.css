@@ -75,6 +75,11 @@ nav > .container{
   text-decoration: none;
 }
 
+.btn{
+  min-width: 90px!important;
+  justify-content: center;
+}
+
 .btn-primary{
   background-color: #24695c!important;
   outline: none!important;
@@ -100,6 +105,10 @@ nav > .container{
   width: 30px;
   margin: 0 6px;
   transition: all 0.3s ease;
+}
+
+.mix_img{
+  width: 25px;
 }
 
 .right-header-icon-wrapper:hover{
@@ -128,7 +137,7 @@ nav > .container{
   border-radius: 50%;
 }
 
-.status-dot.Online {
+.status-dot.Active {
   background-color: green;
 }
 
@@ -337,6 +346,7 @@ nav > .container{
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
   padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
 }
 
 .comment-content {
@@ -353,18 +363,31 @@ nav > .container{
 .search-icon {
   position: absolute;
   top: 50%;
-  left: 1rem;
+  left: 1.8rem;
   transform: translateY(-50%);
   color: #24695c;
   pointer-events: none;
 }
 
 .searchInput {
-  padding-left: 2.5rem !important; /* ensure space for icon */
+  padding-left: 2.5rem !important;
   margin-left: 1rem;
   border: none!important;
-  border-bottom: #e6edef 1px solid!important;
-  border-radius: 0;
+  border-radius: 20px;
+ outline: none;
+
+  /* draw a 1px line at the bottom, with gaps on left/right */
+  background:
+    linear-gradient(to right, transparent 2%, #e6edef 1% 99%, transparent 99%)
+      bottom / 100% 1px no-repeat;
+}
+
+/* optional: change color on focus */
+.searchInput:focus {
+  background-color: #efefef!important;
+  background:
+    linear-gradient(to right, transparent 2%, #24695c 1% 99%, transparent 99%)
+      bottom / 100% 1px no-repeat;
 }
 
 .list-of-menu-dropdown {
@@ -401,6 +424,42 @@ nav > .container{
   background-position: center;
 }
 
+.status-dropdown{
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 0 4px 4px;
+  max-height: 150px;
+  overflow-Y: auto;
+}
+
+.status-dropdown-items{
+  padding: 10px;
+  background-color: #fff; /* option is f1f1f1*/
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  border-radius: 5px;
+}
+
+.status-dropdown-items:hover{
+  background-color: #efeeee;
+}
+.status-dropdown-items:active{
+  background-color: #eaeaea;
+}
+
+.status-dropdown .selected {
+  background-color: #ccc!important; /* when selected */
+}
+
 /*############################
 #####DARK ONLY CSS START######
 ############################*/
@@ -412,6 +471,31 @@ body.dark-only {
   .main-sidebar, .card, .card-body, .card-header, .modal-body, .modal-header .title, .navbar, .searchInput, .list-of-menu-dropdown{
     background-color: #111727;
     color: #fff;
+  }
+
+  .searchInput:focus{
+    background-color: #202938!important;
+    color: #fff!important;
+    background:
+    linear-gradient(to right, transparent 2%, #2e8e7c 1% 99%, transparent 99%)
+      bottom / 100% 1px no-repeat;
+
+  }
+
+  .login-form label{
+    color: #fff!important;
+  }
+
+  .login-special-title h5{
+    background-color: #111727;
+  }
+
+  #basic-addon1{
+    background-color: #111727;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    > img {
+      filter: invert(1);
+    }
   }
 
   .movie-card-wrapper, .movie-card-img {
@@ -445,6 +529,14 @@ body.dark-only {
 
   .comment-card {
     background-color: #111727;
+  }
+
+  .comment-card-header h6{
+    color: rgb(74 168 151)!important;
+  }
+
+  .card-body .text-muted{
+    color: #fff!important;
   }
 
   .comment-card-header {
@@ -559,6 +651,7 @@ body.dark-only {
   .form-control:focus {
     background-color: #202938;
     color: #fff;
+    border-color: #24695c!important;
   }
 
   .react-select__control {
@@ -583,6 +676,40 @@ body.dark-only {
   .react-select__option--is-focused {
     background-color: #19212f;
   }
+
+  .swal2-modal, .swal2-success-circular-line-right, .swal2-success-fix, .swal2-success-circular-line-left, .swal2-toast{
+    background-color: #202938!important;
+  }
+
+  .swal2-modal *, .swal2-toast *{
+    color: white!important;
+  }
+
+  .status-dropdown{
+  background-color: #202938!important;
+  border: 1px solid rgba(36, 105, 92, 0.2)!important;
+}
+
+.status-dropdown-items{
+  background-color: #202938;
+  border-bottom: 1px solid rgba(36, 105, 92, 0.2);
+}
+
+.status-dropdown-items:hover{
+  background-color: #1d2634;
+}
+
+.status-dropdown-items:active{
+  background-color: #1b222f;
+}
+
+.status-dropdown .selected {
+  background-color: #181e29!important;
+}
+
+.mix_img{
+  filter: invert(1);
+}
 }
 /*#########################
 ######DARK ONLY CSS END####

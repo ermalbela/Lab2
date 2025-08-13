@@ -96,7 +96,7 @@ namespace backend.Controllers
 
                     user_.LastLogin = DateTime.Now;
                     if (user_.Status != "Do Not Disturb") {
-                        user_.Status = "Online";
+                        user_.Status = "Active";
                     }
                     
                     var updateResult = await userManager.UpdateAsync(user_);

@@ -41,16 +41,16 @@ export const MENUITEMS = [
         icon: Grid,
         type: "sub",
         children: [
-          { path: `/genres/action`, title: "Action", type: "link", icon: Zap },
-          { path: `/genres/comedy`, title: "Comedy", type: "link", icon: Smile },
-          { path: `/genres/drama`, title: "Drama", type: "link", icon: Users},
-          { path: `/genres/horror`, title: "Horror", type: "link", icon: AlertTriangle },
-          { path: `/genres/romance`, title: "Romance", type: "link", icon: Heart },
-          { path: `/genres/sci-Fi`, title: "Sci-Fi", type: "link", icon: Cpu },
-          { path: `/genres/fantasy`, title: "Fantasy", type: "link", icon: Moon },
-          { path: `/genres/documentary`, title: "Documentary", type: "link", icon: BookOpen },
-          { path: `/genres/animation`, title: "Animation", type: "link", icon: Airplay },
-          { path: `/genres/thriller`, title: "Thriller", type: "link", icon: Eye }
+          { path: `/filter_movies?genre=action`, title: "Action", type: "link", icon: Zap },
+          { path: `/filter_movies?genre=comedy`, title: "Comedy", type: "link", icon: Smile },
+          { path: `/filter_movies?genre=drama`, title: "Drama", type: "link", icon: Users},
+          { path: `/filter_movies?genre=horror`, title: "Horror", type: "link", icon: AlertTriangle },
+          { path: `/filter_movies?genre=romance`, title: "Romance", type: "link", icon: Heart },
+          { path: `/filter_movies?genre=sci-Fi`, title: "Sci-Fi", type: "link", icon: Cpu },
+          { path: `/filter_movies?genre=fantasy`, title: "Fantasy", type: "link", icon: Moon },
+          { path: `/filter_movies?genre=documentary`, title: "Documentary", type: "link", icon: BookOpen },
+          { path: `/filter_movies?genre=animation`, title: "Animation", type: "link", icon: Airplay },
+          { path: `/filter_movies?genre=thriller`, title: "Thriller", type: "link", icon: Eye }
         ],
       },
     ],
@@ -73,16 +73,16 @@ export const actors = [
 ];
 
 export const genres = [
-  { value: "Action", label: "Action" },
-  { value: "Comedy", label: "Comedy" },
-  { value: "Drama", label: "Drama" },
-  { value: "Horror", label: "Horror" },
-  { value: "Romance", label: "Romance" },
-  { value: "Sci-Fi", label: "Sci-Fi" },
-  { value: "Fantasy", label: "Fantasy" },
-  { value: "Documentary", label: "Documentary" },
-  { value: "Animation", label: "Animation" },
-  { value: "Thriller", label: "Thriller" },
+  { value: "action", label: "action" },
+  { value: "comedy", label: "comedy" },
+  { value: "drama", label: "drama" },
+  { value: "horror", label: "horror" },
+  { value: "romance", label: "romance" },
+  { value: "sci-fi", label: "sci-fi" },
+  { value: "fantasy", label: "fantasy" },
+  { value: "documentary", label: "documentary" },
+  { value: "animation", label: "animation" },
+  { value: "thriller", label: "thriller" },
 ];
 
 export const directors = [

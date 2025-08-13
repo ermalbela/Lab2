@@ -14,6 +14,33 @@ const Sidebar = () => {
   const [activePath, setActivePath] = useState('/');
   const [status, setStatus] = useState(JSON.parse(localStorage.getItem('status')));
 
+  //Update state when another component updates localstorage
+  useEffect(() => {
+  const updateFromStorage = () => {
+    const storedStatus = localStorage.getItem("status");
+    setStatus(storedStatus ? JSON.parse(storedStatus) : null);
+  };
+
+  // Run once on mount
+  updateFromStorage();
+
+  // Listen for both cross-tab and same-tab changes
+  const handleStorage = (event) => {
+    if (event.key === "status") {
+      updateFromStorage();
+    }
+  };
+  const handleCustom = () => updateFromStorage();
+
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener("statusChange", handleCustom);
+
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener("statusChange", handleCustom);
+  };
+}, []);
+
   return (
     <div className={`main-sidebar ${toggle ? 'closed-sidebar' : ''}`}>
       <Link className="setting-primary" to={`/account`}>
@@ -60,19 +87,19 @@ const Sidebar = () => {
                     <div className={`dropdown-animated ${isOpen ? 'show' : ''}`}>
                       <div className={`dropdown-menu-custom`}>
                         {menuItem.children.map((child, cIdx) => (
-                          <a
+                          <Link
+                            to={child.path}
                             key={cIdx}
                             id="nav-link"
                             className={`bar-item sub-item d-flex align-items-center m-0 mt-1 ${activePath === child.path ? 'active' : ''}`}
                             onClick={() => {
                               setActivePath(child.path);
-                              setOpenDropdown(null);
                             }}
                             style={{ cursor: 'pointer', display: 'block' }}
                           >
                             {child.icon && <child.icon className="icon" />}
                             <span>{child.title}</span>
-                          </a>
+                          </Link>
                         ))}
                       </div>
                     </div>
@@ -82,9 +109,6 @@ const Sidebar = () => {
             return null;
           })
         )}
-        {/* <li>
-          <a href="index.php" className="bar-item"><img src="../src/images/home.png" className="icon-wrapper" alt="Edit Icon" />Main Page</a>
-        </li> */}
       </div>
     </div>
   )
