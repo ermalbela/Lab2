@@ -10,7 +10,7 @@ export const routes = [
   {path: '/', Component: <Dashboard />, name: 'Dashboard'},
   {path: '/login', Component: <Login />, name: 'Login'},
   {path: '/login', Component: <Register />, name: 'Register'},
-  {path: '/movie_watcher', Component: <MovieWatcher />, name: 'MovieWatcher'},
+  {path: '/get_movie', Component: <MovieWatcher />, name: 'MovieWatcher'},
   {path: '/favorites', Component: <Favorites />, name: 'Favorites'},
   {path: '/account', Component: <AccountSettings />, name: 'AccountSettings' },
   {path: '/filter_movies', Component: <FilteredMovies />, name: 'FilteredMovies'}

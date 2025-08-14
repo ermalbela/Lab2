@@ -3,8 +3,7 @@ import Loader from '../Layout/Loader'
 import { Card, CardHeader, CardBody, Row, Col, Button, FormGroup, FormLabel, Form, FormControl, Modal, DropdownButton } from 'react-bootstrap'
 import MovieCard from '../CommonElements/MovieCard';
 import axios from 'axios';
-import { addMovie, getMovies } from '../Endpoint';
-import MovieContext from '../_helper/MovieContext';
+import { addMovie, getMovies, selectMovie } from '../Endpoint';
 import { useNavigate } from 'react-router-dom';
 import { actors, directors, genres, languages } from '../Menu';
 import MySelect from '../CommonElements/MySelect';
@@ -20,7 +19,6 @@ import AuthContext from '../_helper/AuthContext';
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [movies, setMovies] = useState([]);
-  const {movieProps, setMovieProps} = useContext(MovieContext);
   const [createMovie, setCreateMovie] = useState(false);
   const [errors, setErrors] = useState({});
 
@@ -255,8 +253,18 @@ const Dashboard = () => {
                     {filteredPaginationMovies.map((movie, idx) => (
                       <Col sm={3} className="d-flex" key={idx} onClick={(e) => {
                         e.preventDefault();
-                        setMovieProps([movie][0]);
-                        history('/movie_watcher');
+                        // axios.get(selectMovie + [movie][0].id, {
+                        //   headers: {
+                        //     Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+                        //   },
+                        //   withCredentials: true})
+                        // .then(res => {
+                          history('/get_movie?id=' + [movie][0].id);
+                        //   console.log(res.data)
+                        // })
+                        // .catch(err => {
+                        //   console.log(err);
+                        // });
                       }}>
                         <MovieCard props={movie} />
                       </Col>

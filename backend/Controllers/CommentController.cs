@@ -48,5 +48,34 @@ namespace backend.Controllers
             }
         }
 
+        [HttpDelete("delete_comment/{commentId}")]
+        public async Task<IActionResult> DeleteComment(string commentId, [FromBody] DeleteRequest request)
+        {
+            try
+            {
+
+                var comment = await _comments.Find(c => c.Id == commentId).FirstOrDefaultAsync();
+                if (comment == null)
+                    return NotFound("Comment not found.");
+
+                if (comment.UserId != request.UserId)
+                    return Forbid("You can only delete your own comments.");
+
+                await _comments.DeleteOneAsync(c => c.Id == commentId);
+
+                return Ok(new { message = "Comment deleted successfully." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        public class DeleteRequest
+        {
+            public string UserId { get; set; }  // matches JSON key
+        }
+
+
     }
 }

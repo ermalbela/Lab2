@@ -57,5 +57,14 @@ namespace backend.Models
 
         [BsonElement("ratingCount")]
         public int RatingCount { get; set; } = 0;
+
+        [BsonElement("ratings")]
+        public List<MovieRating> Ratings { get; set; } = new();
+    }
+
+    public class MovieRating
+    {
+        public string UserId { get; set; }
+        public int Score { get; set; }
     }
 }

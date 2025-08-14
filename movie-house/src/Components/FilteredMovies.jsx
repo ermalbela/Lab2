@@ -7,7 +7,6 @@ import { Card, CardHeader, CardBody, Row, Col } from 'react-bootstrap';
 import MovieCard from '../CommonElements/MovieCard';
 import CustomPagination from '../CommonElements/Pagination';
 import Swal from 'sweetalert2';
-import MovieContext from '../_helper/MovieContext';
 
 const FilteredMovies = () => {
   function useQuery(){
@@ -20,7 +19,6 @@ const FilteredMovies = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [movies, setMovies] = useState([]);
-  const {movieProps, setMovieProps} = useContext(MovieContext);
 
   async function fetchMovies(){
     setIsLoading(true);
@@ -81,8 +79,7 @@ const FilteredMovies = () => {
                     {filteredPaginationMovies.map((movie, idx) => (
                       <Col sm={3} className="d-flex" key={idx} onClick={(e) => {
                         e.preventDefault();
-                        setMovieProps([movie][0]);
-                        history('/movie_watcher');
+                        history('/get_movie?id=' + [movie][0].id);
                       }}>
                         <MovieCard props={movie} />
                       </Col>

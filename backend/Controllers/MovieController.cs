@@ -9,6 +9,8 @@ using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using MongoDB.Bson;
 
 [ApiController]
 [Route("api/movies")]
@@ -65,15 +67,22 @@ public class MovieController : ControllerBase
     }
 
 
-    [HttpGet("get_movie/{id}")]
-    public ActionResult<Movie> Get(string id)
+    [HttpGet("get_movie")]
+    public ActionResult<Movie> GetMovie([FromQuery] string id)
     {
-        var movie = _movies.Find(m => m.Id == id).FirstOrDefault();
-        
+        if (!ObjectId.TryParse(id, out ObjectId objectId))
+            return BadRequest("Invalid movie ID.");
+
+        var movie = _movies.Find(m => m.Id == objectId.ToString()).FirstOrDefault();
+
+
         if (movie == null)
         {
             return NotFound($"Movie with ID {id} not found.");
         }
+
+        movie.Poster = $"http://localhost:5064/Images/{movie.ImageName}";
+        movie.Video = $"http://localhost:5064/Videos/{movie.VideoName}";
 
         return Ok(movie);
     }
@@ -129,6 +138,37 @@ public class MovieController : ControllerBase
         {
             return BadRequest($"Failed to create movie: {ex.Message}");
         }
+    }
+
+    public class RateRequest
+    {
+        public string UserId { get; set; }
+        public int Score { get; set; }
+    }
+
+
+    [HttpPost("rate_movie/{movieId}")]
+    public async Task<IActionResult> RateMovie(string movieId, RateRequest request)
+    {
+        var movie = await _movies.Find(m => m.Id == movieId).FirstOrDefaultAsync();
+        if (movie == null)
+            return NotFound("Movie not found.");
+
+        if (movie.Ratings.Any(r => r.UserId == request.UserId))
+            return BadRequest("You have already rated this movie.");
+
+        movie.Ratings.Add(new MovieRating
+        {
+            UserId = request.UserId,
+            Score = request.Score
+        });
+
+        movie.RatingCount = movie.Ratings.Count;
+        movie.AverageRating = movie.Ratings.Average(r => r.Score);
+
+        await _movies.ReplaceOneAsync(m => m.Id == movieId, movie);
+
+        return Ok(new {message = "Rating added successfully.", movie});
     }
 
 

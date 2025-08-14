@@ -47,6 +47,10 @@
   }
 }
 
+body.dark-only .loader-wrapper{
+  background: #202938!important;
+}
+
 @keyframes loader {
   0% {
     transform: scale(0);

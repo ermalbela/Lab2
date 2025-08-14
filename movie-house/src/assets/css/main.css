@@ -460,6 +460,10 @@ nav > .container{
   background-color: #ccc!important; /* when selected */
 }
 
+.action-btn{
+  cursor: pointer;
+}
+
 /*############################
 #####DARK ONLY CSS START######
 ############################*/

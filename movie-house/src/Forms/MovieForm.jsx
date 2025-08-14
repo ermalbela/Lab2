@@ -3,7 +3,6 @@ import { actors, directors, genres, languages } from '../Menu';
 import MySelect from '../CommonElements/MySelect';
 import DatePicker from 'react-datepicker';
 import { Card, CardHeader, CardBody, Row, Col, Button, FormGroup, FormLabel, Form, FormControl, Modal, DropdownButton } from 'react-bootstrap'
-import MovieContext from '../_helper/MovieContext';
 import { components } from 'react-select';
 import Swal from 'sweetalert2';
 import { addMovie, getMovies } from '../Endpoint';
@@ -28,7 +27,6 @@ const MovieForm = (formProps) => {
   }
   
   const [movie, setMovie] = useState(initialData);
-  const {movieProps, setMovieProps} = useContext(MovieContext);
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {

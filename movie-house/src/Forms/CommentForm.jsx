@@ -1,17 +1,23 @@
 import React, { useContext, useState } from 'react'
 import { Form, FormGroup, FormLabel, FormControl, Button } from 'react-bootstrap'
-import MovieContext from '../_helper/MovieContext';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { addComment } from '../Endpoint';
 import Swal from 'sweetalert2';
 
 const CommentForm = (formProps) => {
   const [comment, setComment] = useState('');
-  const {movieProps} = useContext(MovieContext);
+
+  function useQuery(){
+        return new URLSearchParams(useLocation().search);
+      }
+    
+    const query = useQuery();
+    const id = query.get("id");
 
   const handleClick = (comment) => {
     const userId = JSON.parse(localStorage.getItem('userId'));
-    const movieId = movieProps.id;
+    const movieId = id;
     const userName = JSON.parse(localStorage.getItem('name'));
 
     const finalVals = {

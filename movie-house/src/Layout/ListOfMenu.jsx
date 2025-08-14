@@ -1,10 +1,8 @@
 import React, { useContext } from 'react'
 import { Col, Row } from 'react-bootstrap';
-import MovieContext from '../_helper/MovieContext';
 import { useNavigate } from 'react-router-dom';
 
 const ListOfMenu = ({searchResult, setSearchValue, setSearchToggle}) => {
-  const {setMovieProps} = useContext(MovieContext);
   const history = useNavigate();
 
   return (
@@ -14,10 +12,9 @@ const ListOfMenu = ({searchResult, setSearchValue, setSearchToggle}) => {
         return (
           <Row key={idx} className="list-of-menu-item align-items-center" onClick={(e) => {
             e.preventDefault();
-            setMovieProps(data);
             setSearchValue('');
             setSearchToggle(false);
-            history('/movie_watcher');
+            history('/get_movie?id=' + [data][0].id);
           }}>
             <Col xs={2}>
               <img src={data.poster} className="list-of-menu-image img-fluid" alt={data.title} />

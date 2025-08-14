@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import {Card, CardImg, CardBody, CardTitle, CardText, Button, CardFooter, CardHeader} from "react-bootstrap";
 
 const MovieCard = ({ props }) => {
+  console.log(props);
   return (
     <>
       <Card className="movie-card-wrapper w-100">

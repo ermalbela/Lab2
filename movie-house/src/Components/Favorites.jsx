@@ -4,14 +4,12 @@ import { Card, CardHeader, CardBody, Row, Col, Button, FormGroup, FormLabel, For
 import MovieCard from '../CommonElements/MovieCard';
 import axios from 'axios';
 import CustomPagination from '../CommonElements/Pagination'
-import { getAllFavorites } from '../Endpoint';
-import MovieContext from '../_helper/MovieContext';
+import { getAllFavorites, deleteComment} from '../Endpoint';
 import { useNavigate } from 'react-router-dom';
 
 const Favorites = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [favorites, setFavorites] = useState([]);
-  const {movieProps, setMovieProps} = useContext(MovieContext);
 
   async function fetchAllFavorites(){
     const response = await axios.get(getAllFavorites + JSON.parse(localStorage.getItem('userId')), {
@@ -31,6 +29,7 @@ const Favorites = () => {
     fetchAllFavorites();
   }, []);
 
+  
   return isLoading ? (
     <Loader isLoading={isLoading}/>
   ) : (
@@ -59,8 +58,7 @@ const Favorites = () => {
                     {favorites.map((favorite, idx) => (
                       <Col sm={3} className="d-flex" key={idx} onClick={(e) => {
                         e.preventDefault();
-                        setMovieProps([favorite][0]);
-                        history('/movie_watcher');
+                        history('/get_movie?id=' + [favorite][0].id);
                       }}>
                         <MovieCard props={favorite} />
                       </Col>
