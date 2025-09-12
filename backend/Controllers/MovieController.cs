@@ -11,6 +11,7 @@ using System;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using MongoDB.Bson;
+using System.Xml.Linq;
 
 [ApiController]
 [Route("api/movies")]
@@ -18,6 +19,7 @@ using MongoDB.Bson;
 public class MovieController : ControllerBase
 {
     private readonly IMongoCollection<Movie> _movies;
+    private readonly IMongoCollection<Comment> _comments;
     private readonly IWebHostEnvironment _hostEnvironment;
 
     public MovieController(IConfiguration config, IWebHostEnvironment hostEnvironment)
@@ -25,8 +27,8 @@ public class MovieController : ControllerBase
         var client = new MongoClient(config.GetConnectionString("MongoDb"));
         var database = client.GetDatabase(config["MongoDbSettings:DatabaseName"]);
         _movies = database.GetCollection<Movie>(config["MongoDbSettings:CollectionName"]);
+        _comments = database.GetCollection<Comment>(config["MongoDbSettings:CommentsCollectionName"]);
         this._hostEnvironment = hostEnvironment;
-
     }
 
     [HttpGet("get_movies")]
@@ -139,6 +141,28 @@ public class MovieController : ControllerBase
             return BadRequest($"Failed to create movie: {ex.Message}");
         }
     }
+
+    [HttpDelete("delete_movie/{id}")]
+    public async Task<IActionResult> DeleteMovie(string id)
+    {
+        if (!ObjectId.TryParse(id, out ObjectId objectId))
+            return BadRequest("Invalid movie ID.");
+
+        var movie = await _movies.Find(m => m.Id == id).FirstOrDefaultAsync();
+        if (movie == null)
+            return NotFound($"Movie with ID {id} not found.");
+
+        // Delete associated files
+        DeleteImage(movie.ImageName);
+        DeleteVideo(movie.VideoName);
+
+        await _movies.DeleteOneAsync(m => m.Id == id);
+
+        await _comments.DeleteManyAsync(c => c.MovieId == id);
+
+        return Ok(new { message = "Movie deleted successfully." });
+    }
+
 
     public class RateRequest
     {

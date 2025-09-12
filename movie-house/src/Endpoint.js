@@ -13,6 +13,7 @@ export const selectMovie = movieApi + 'get_movie';
 export const addMovie = movieApi + 'create_movie';
 export const getFilteredMovies = movieApi + 'filter_movies?';
 export const rateMovie = movieApi + 'rate_movie/';
+export const deleteMovie = movieApi + 'delete_movie/';
 
 const commentApi = 'http://localhost:5064/api/comments/';
 export const addComment = commentApi + 'add_comment';

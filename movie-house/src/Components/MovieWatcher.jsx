@@ -5,7 +5,7 @@ import ReactPlayer from 'react-player';
 import CommonModal from '../CommonElements/CommonModal';
 import { useNavigate, useLocation   } from 'react-router-dom';
 import CommentForm from '../Forms/CommentForm';
-import { deleteComment, getComments, getFavorites, selectMovie, toggleFavoriteApi } from '../Endpoint';
+import { deleteComment, deleteMovie, getComments, getFavorites, selectMovie, toggleFavoriteApi } from '../Endpoint';
 import axios from 'axios';
 import CustomPagination from '../CommonElements/Pagination';
 import { Star, X } from 'react-feather';
@@ -15,6 +15,8 @@ import Swal from 'sweetalert2';
 import AuthContext from '../_helper/AuthContext';
 
 const MovieWatcher = () => {
+
+  const history = useNavigate();
   function useQuery(){
       return new URLSearchParams(useLocation().search);
     }
@@ -52,8 +54,6 @@ const MovieWatcher = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [addRate, setAddRate] = useState(false);
   const {role} = useContext(AuthContext);
-  // const history = useNavigate();
-
 
   async function fetchComments(){
     const response = await axios.get(getComments + id, {
@@ -126,6 +126,34 @@ const MovieWatcher = () => {
       }
     };
 
+  const handleDeleteMovie = async (movieId) => {
+    try{
+      const result = await Swal.fire({
+          title: 'Are you sure?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!'
+        });
+        
+        if (result.isConfirmed) {
+          await axios.delete(deleteMovie + movieId , {
+            headers: {
+              Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
+            },
+            withCredentials: true,
+            // data: {UserId: JSON.parse(localStorage.getItem("userId"))}
+          });
+          Swal.fire('Deleted!', `Movie ${movie.title} has been deleted.`, 'success');
+          history('/');
+        }
+      } catch (err) {
+        console.error(err);
+        Swal.fire('Error', 'Failed to delete movie', 'error');
+      }
+  }
+
+
   return isLoading ? (
     <Loader isLoading={isLoading}/>
   ) : (
@@ -136,9 +164,18 @@ const MovieWatcher = () => {
       <Card>
         <CardHeader>
           <Col className='d-flex justify-content-between'>
-            <Button onClick={() => setAddRate(true)}>Rate Movie</Button>
-            <Button onClick={() => setAddComent(true)}>Add Comment</Button>
+            <Col xs={2}>
+              <Button onClick={() => setAddRate(true)} className="w-100">Rate Movie</Button>
+            </Col>
+            <Col xs={2} className='d-flex justify-content-end'>
+              <Button onClick={() => setAddComent(true)} className="w-100">Add Comment</Button>
+            </Col>
           </Col>
+          {role === "Superadmin" ? <Col className='d-flex justify-content-end mt-2'>
+            <Col xs={2}>
+              <Button onClick={() => handleDeleteMovie(movie.id)} variant='danger' className='w-100'>Delete Movie</Button>
+            </Col>
+          </Col> : ''}
         </CardHeader>
         <CardBody>
           <Card>

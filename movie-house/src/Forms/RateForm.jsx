@@ -26,7 +26,7 @@ const RateForm = (formProps) => {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
       },
       withCredentials: true
-   })
+    })
     .then(res => {
       Swal.fire('Success!', res?.data?.message , 'success')
       formProps.setAddRate(false);
@@ -55,11 +55,12 @@ const RateForm = (formProps) => {
                 stroke={star <= (hover || rate) ? "gold" : "gray"} // outline color
               />
             ))}
+            <p className="invalidFeedback fullWidth ">{errors.score}</p>
           </div>
       </FormGroup>
       <FormGroup className='formGroup d-flex justify-content-between'>
         <Button variant='secondary' onClick={() => formProps.setAddRate(false)}>Close</Button>
-        <Button className="admin-buttons" onClick={() => handleClick(rate)}>Add rate</Button>
+        <Button className="admin-buttons" onClick={() => handleClick(rate)}>Rate</Button>
       </FormGroup>
     </Form>
   )

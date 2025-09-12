@@ -28,7 +28,7 @@ const PrivateRoute = () => {
   }
 
   return(
-    role !== '' && role?
+    role !== '' && role ?
       <Outlet />
     : 
       <Navigate to={`/login`} />

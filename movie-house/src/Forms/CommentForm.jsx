@@ -12,10 +12,21 @@ const CommentForm = (formProps) => {
         return new URLSearchParams(useLocation().search);
       }
     
-    const query = useQuery();
-    const id = query.get("id");
+  const query = useQuery();
+  const id = query.get("id");
+  
+  const [errors, setErrors] = useState({});
+
+  const validate = (vals) => {
+    const errors = {};
+    if(!vals.comment || vals.comment.length < 3){
+      errors.comment = 'Enter a valid Comment!';
+    }
+      return errors;
+  }
 
   const handleClick = (comment) => {
+    setErrors(validate(comment));
     const userId = JSON.parse(localStorage.getItem('userId'));
     const movieId = id;
     const userName = JSON.parse(localStorage.getItem('name'));
@@ -29,17 +40,19 @@ const CommentForm = (formProps) => {
     }
     console.log(finalVals);
 
-    axios.post(addComment, {Content: comment, UserId: userId, MovieId: movieId, CreatedAt: new Date().toISOString(), UserName: userName}, {
-      headers: {
-        Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
-      },
-      withCredentials: true
-   })
-    .then(res => {
-      Swal.fire('Success!', res?.data?.message , 'success')
-      formProps.setAddComent(false);
-      formProps.fetchComments()
-    })
+    if(comment.length > 3){
+      axios.post(addComment, {Content: comment, UserId: userId, MovieId: movieId, CreatedAt: new Date().toISOString(), UserName: userName}, {
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem('token'))}`
+        },
+        withCredentials: true
+      })
+      .then(res => {
+        Swal.fire('Success!', res?.data?.message , 'success')
+        formProps.setAddComent(false);
+        formProps.fetchComments()
+      })
+    }
   }
 
   return (
@@ -48,6 +61,7 @@ const CommentForm = (formProps) => {
         <FormLabel>What do you think about this movie?</FormLabel>
           <div className="input-group">
             <FormControl className="form-control" as={'textarea'} type="text" name='title' placeholder="e.g. Mr.Bean" value={comment} onChange={e => setComment(e.target.value)} />
+              <p className="invalidFeedback fullWidth">{errors.comment}</p>
           </div>
       </FormGroup>
       <FormGroup className='formGroup d-flex justify-content-between'>

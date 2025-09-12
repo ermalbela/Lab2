@@ -7,6 +7,7 @@ import { components } from 'react-select';
 import Swal from 'sweetalert2';
 import { addMovie, getMovies } from '../Endpoint';
 import axios from 'axios';
+import { patterns } from '../Validation';
 
 const MovieForm = (formProps) => {
 
@@ -28,6 +29,38 @@ const MovieForm = (formProps) => {
   
   const [movie, setMovie] = useState(initialData);
   const [errors, setErrors] = useState({});
+
+  const validate = (vals) => {
+      const errors = {};
+      if(!patterns.name.test(vals.title)){
+        errors.title = 'Enter a valid Movie Name!';
+      }
+      if(vals.plot.length < 5){
+        errors.plot = 'Enter a valid Plot!';
+      }
+      if(!vals.genres || vals.genres.length === 0) {
+        errors.genres = 'Enter at least 1 Genre!';
+      }
+      if(!vals.actors || vals.actors.length === 0) {
+        errors.actors = 'Enter at least 1 Actor!';
+      }
+      if(!vals.directors || vals.directors.length === 0) {
+        errors.directors = 'Enter at least 1 Director!';
+      }
+      if(!vals.languages || vals.languages.length === 0) {
+        errors.languages = 'Enter at least 1 Language!';
+      }
+      if(vals.released == '' || vals.released == undefined){
+        errors.released = 'Please choose a date!';
+      }
+      if (!vals.imageFile || vals.imageFile.size === 0) {
+        errors.imageFile = "Please select a valid Image!";
+      }
+      if (!vals.videoFile || vals.videoFile.size === 0) {
+        errors.videoFile = "Please select a valid Video!";
+      }
+        return errors;
+    }
 
   const handleChange = (e) => {
       const {name, value} = e.target;
@@ -131,7 +164,7 @@ const MovieForm = (formProps) => {
         setMovie({ ...movie, video: '' });
       }
     };
-  
+
     async function fetchData(){
       const response = await axios.get(getMovies, {
       headers: {
@@ -144,6 +177,9 @@ const MovieForm = (formProps) => {
   }
 
     const handleClick = (movie) => {
+      const validateErrors = validate(movie);
+      setErrors(validateErrors);
+
       const formData = new FormData();
       formData.append("title", movie.title);
       formData.append("plot", movie.plot);
@@ -159,45 +195,17 @@ const MovieForm = (formProps) => {
       formData.append('VideoFile', movie.videoFile);
       formData.append('VideoName', movie.videoName);
   
-      axios.post(addMovie, formData)
-      .then(data => {
-        Swal.fire('Success', 'Movie added successfully', 'success');
-        formProps.setCreateMovie(false);
-        console.log(data)
-        fetchData();
-      })  
-    }
-    
-      const validate = (vals) => {
-      const errors = {};
-      if(!patterns.name.test(vals.name)){
-        errors.name = 'Enter a valid Company Name!';
+      if (Object.keys(validateErrors).length === 0) {
+        axios.post(addMovie, formData, {headers: {
+          Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('token'))
+        }})
+        .then(data => {
+          Swal.fire('Success', 'Movie added successfully', 'success');
+          formProps.setCreateMovie(false);
+          console.log(data)
+          fetchData();
+        })  
       }
-      if(!patterns.name.test(vals.originCountry)){
-        errors.originCountry = 'Enter a valid Origin Country!';
-      }
-      if(!patterns.name.test(vals.destinationCountry)){
-        errors.destinationCountry = 'Enter a valid Destination Country!';
-      }
-      if(vals.tickets < 50){
-        errors.tickets = 'Ticket number should be bigger than 50!';
-      }
-      if(vals.ticketPrice < 40){
-        errors.ticketPrice = 'Ticket price should be bigger than 40!';
-      }
-      if(vals.date == '' || vals.date == undefined){
-        errors.date = 'Please choose a date!';
-      }
-      if(vals.arrival == '' || vals.arrival == undefined){
-        errors.arrival = 'Please choose a valid Arrival!';
-      }
-      if(vals.departure == '' || vals.departure == undefined){
-        errors.departure = 'Please choose a valid Departure!';
-      }
-      if(vals.selectedPlane == null || vals.selectedPlane == '' || vals.selectedPlane == 'Select Plane'){
-        errors.selectedPlane = 'Please choose a Plane!';
-      }
-      return errors;
     }
   
   return (
@@ -319,12 +327,14 @@ const MovieForm = (formProps) => {
           <label className='btn btn-primary m-0 admin-buttons fullWidth d-flex align-items-center justify-content-center' style={{height: '50px'}} htmlFor="input">Select Image
             <input id='input' style={{display: 'none'}} type="file" accept='image/*' onChange={showPreview} />
           </label>
+          <p className="invalidFeedback fullWidth">{errors.imageFile}</p>
         </FormGroup>
         <FormGroup className='formGroup modal-inputs'>
         <FormLabel>Movie Video</FormLabel>
           <label className='btn btn-primary m-0 admin-buttons fullWidth d-flex align-items-center justify-content-center' style={{ height: '50px' }} htmlFor="videoInput">Select Video
             <input id='videoInput' style={{ display: 'none' }} type="file" accept='video/*' onChange={showVideoPreview} />
           </label>
+          <p className="invalidFeedback fullWidth">{errors.videoFile}</p>
         </FormGroup>
       </Col>
       <Col>
@@ -333,13 +343,12 @@ const MovieForm = (formProps) => {
           <div className="input-group login-form-inputs">
               <FormControl as={'textarea'} rows={2} className="form-textarea" type="text" name="plot" placeholder="e.g. " value={movie.plot} onChange={handleChange} />
           </div>
-          <p className='invalidFeedback fullWidth'>{errors.plot}</p>
+          <p className='invalidFeedback fullWidth mt-3'>{errors.plot}</p>
         </FormGroup>
       </Col>
       <FormGroup className='formGroup d-flex justify-content-between'>
         <Button variant='secondary' onClick={() => formProps.setCreateMovie(false)}>Close</Button>
         <Button className="admin-buttons" onClick={() => handleClick(movie)}>Create Movie</Button>
-        {/* <Button className="admin-buttons" onClick={() => handleClick(createMovie, movie)}>Create Movie</Button> */}
       </FormGroup>
     </Form>
   )
