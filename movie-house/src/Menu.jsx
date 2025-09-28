@@ -1,5 +1,5 @@
 import { Alert } from "react-bootstrap";
-import { Home, Star, CheckSquare, Grid, Zap, Users, Smile, Eye, EyeOff, AlertTriangle, Heart, Cpu, Moon, BookOpen, Activity, Airplay } from "react-feather";
+import { Home, Star, CheckSquare, Grid, Zap, Users, Smile, Eye, AlertTriangle, Heart, Cpu, Moon, BookOpen, Airplay, User } from "react-feather";
 
 export const MENUITEMS = [
   {
@@ -31,10 +31,11 @@ export const MENUITEMS = [
       //   path: `/account`,
       // },
       {
-        title: "Dashboard",
-        icon: Home,
+        title: "Admin Dashboard",
+        icon: User,
         type: "link",
-        path: `/asdasdasd`,
+        path: `/admin_dashboard`,
+        roles: ["Admin", "Superadmin"] // only show if the user is admin or superadmin
       },
       {
         title: "Genres",

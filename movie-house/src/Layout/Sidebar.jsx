@@ -58,6 +58,9 @@ const Sidebar = () => {
       <div className="bar-item-wrapper custom-scrollbar">
         {MENUITEMS.map(item =>
           item.Items.map((menuItem, idx) => {
+            if(menuItem.title === "Admin Dashboard" && role !== "Superadmin" && role !== "Admin"){
+              return null
+            }
             if (menuItem.type === 'link') {
               return (
                 <Link

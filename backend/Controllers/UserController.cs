@@ -77,7 +77,13 @@ namespace backend.Controllers
 
             try
             {
-                User user_ = await userManager.FindByEmailAsync(login.Email);
+                if (string.IsNullOrWhiteSpace(login.Email))
+                {
+                    return BadRequest(new { message = "Email is required." });
+                }
+
+                User? user_ = await userManager.FindByEmailAsync(login.Email);
+                
                 if (user_ != null)
                 {
                     login.Username = user_.UserName;
