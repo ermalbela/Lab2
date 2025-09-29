@@ -87,7 +87,7 @@ const AdminDashboard = () => {
           ) : error ? (
             <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>
           ) : (
-            <Table striped bordered hover responsive className="custom-table">
+            <Table hover striped bordered responsive className="custom-table">
               <thead>
                 <tr>
                   <th>#</th>
@@ -125,7 +125,7 @@ const AdminDashboard = () => {
                             Delete
                           </Button>
                         ) : (
-                          <span className="text-muted">N/A</span>
+                          <span className="text-muted" >No Access</span>
                         )}
                       </td>
                     </tr>

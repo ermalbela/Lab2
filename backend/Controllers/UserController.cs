@@ -52,7 +52,7 @@ namespace backend.Controllers
                     Name = user.Name,
                     Email = user.Email,
                     UserName = user.UserName,
-                    Role = "Admin",
+                    Role = "User",
                     Status = user.Status
                 };
 

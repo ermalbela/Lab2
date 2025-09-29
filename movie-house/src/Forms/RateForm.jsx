@@ -17,7 +17,18 @@ const RateForm = (formProps) => {
   const query = useQuery();
   const id = query.get("id");
 
+  const [errors, setErrors] = useState({});
+  
+  const validate = (vals) => {
+    const errors = {};
+    if(!vals.score || vals.score === 0){
+      errors.score = "Something went wrong!";
+    }
+      return errors;
+  }
+
   const handleClick = (score) => {
+    setErrors(validate(score));
     const userId = JSON.parse(localStorage.getItem('userId'));
     const movieId = id;
 
