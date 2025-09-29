@@ -11,21 +11,7 @@ const AdminDashboard = () => {
   const {role} = useContext(AuthContext);
   const API_BASE = "http://localhost:5064/api/admin_dashboard"; // new controller
 
-  // // Fetch Role
-  // const fetchRole = async () => {
-  //   try {
-  //     const token = JSON.parse(localStorage.getItem("token"));
-  //     const response = await axios.get("http://localhost:5064/api/users/user-role", {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     });
-  //     setRole(response.data.role);
-  //   } catch (err) {
-  //     console.error("Failed to fetch role", err);
-  //     setRole(null);
-  //   }
-  // };
 
-  // Fetch all users
   const fetchUsers = async () => {
     try {
       setLoading(true);
@@ -43,7 +29,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // Delete user
   const handleDelete = async (id, username) => {
     Swal.fire({
       title: `Delete ${username}?`,
@@ -71,7 +56,6 @@ const AdminDashboard = () => {
     });
   };
 
-  // Load role + users on page load
   useEffect(() => {
     fetchUsers();
   }, []);
