@@ -52,7 +52,7 @@ namespace backend.Controllers
                     Name = user.Name,
                     Email = user.Email,
                     UserName = user.UserName,
-                    Role = "User",
+                    Role = "Admin",
                     Status = user.Status
                 };
 
@@ -74,7 +74,6 @@ namespace backend.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> LoginUser(Login login)
         {
-
             try
             {
                 if (string.IsNullOrWhiteSpace(login.Email))
@@ -83,7 +82,7 @@ namespace backend.Controllers
                 }
 
                 User? user_ = await userManager.FindByEmailAsync(login.Email);
-                
+
                 if (user_ != null)
                 {
                     login.Username = user_.UserName;
@@ -100,22 +99,25 @@ namespace backend.Controllers
                         return Unauthorized(new { message = "Check your login credentials and try again" });
                     }
 
+                    // Set LastLogin
                     user_.LastLogin = DateTime.Now;
-                    if (user_.Status != "Do Not Disturb") {
+
+                    // Default status to Active (except Do Not Disturb)
+                    if (user_.Status != "Do Not Disturb")
+                    {
                         user_.Status = "Active";
                     }
-                    
-                    var updateResult = await userManager.UpdateAsync(user_);
 
+                    await userManager.UpdateAsync(user_);
+
+                    // Generate JWT token
                     var claims = new List<Claim>
-                                    {
-                                        new Claim(ClaimTypes.Email,user_.UserName),
-                                        new Claim(ClaimTypes.Role,user_.Role == "Superadmin" ? "Superadmin" : user_.Role == "Admin" ? "Admin" : "User")
-                                    };
+            {
+                new Claim(ClaimTypes.Email, user_.UserName),
+                new Claim(ClaimTypes.Role, user_.Role == "Superadmin" ? "Superadmin" : user_.Role == "Admin" ? "Admin" : "User")
+            };
                     var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("Jwt:Key").Value));
-
                     var signInCred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-
                     var securityToken = new JwtSecurityToken(
                         claims: claims,
                         expires: DateTime.Now.AddMinutes(60),
@@ -125,6 +127,7 @@ namespace backend.Controllers
                     );
                     var tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
 
+                    // Set cookie
                     HttpContext.Response.Cookies.Append("token", tokenString, new CookieOptions
                     {
                         HttpOnly = true,
@@ -137,32 +140,69 @@ namespace backend.Controllers
                 }
                 else
                 {
-                    return BadRequest(new { message = "Please check your credentials and try again. " });
+                    return BadRequest(new { message = "Please check your credentials and try again." });
                 }
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = "Something went wrong, please try again. " + ex.Message });
             }
-
         }
 
         [HttpGet("logout")]
         public async Task<ActionResult> LogoutUser()
         {
-
             try
             {
+                var token = Request.Cookies["token"];
+                if (!string.IsNullOrEmpty(token))
+                {
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+
+                    try
+                    {
+                        var claimsPrincipal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidIssuer = _config["Jwt:Issuer"],
+                            ValidAudience = _config["Jwt:Audience"],
+                            IssuerSigningKey = securityKey
+                        }, out var validatedToken);
+
+                        var userName = claimsPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+                        if (!string.IsNullOrEmpty(userName))
+                        {
+                            var user = await userManager.FindByNameAsync(userName);
+                            if (user != null && user.Status != "Do Not Disturb")
+                            {
+                                user.Status = "Offline";
+                                await userManager.UpdateAsync(user);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        // Invalid token, ignore
+                    }
+                }
+
+                // Sign out and delete token
                 await signInManager.SignOutAsync();
                 Response.Cookies.Delete("token");
+
+                return Ok(new { message = "You have logged out successfully." });
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Someting went wrong, please try again. " + ex.Message });
+                return BadRequest(new { message = "Something went wrong, please try again. " + ex.Message });
             }
-
-            return Ok(new { message = "You are free to go!" });
         }
+
+
+
 
         [HttpGet("users")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
