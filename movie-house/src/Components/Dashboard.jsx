@@ -42,7 +42,7 @@ const Dashboard = () => {
   const history = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const moviesPerPage = 10;
+  const moviesPerPage = 12;
 
   const lastVisitIndex = currentPage * moviesPerPage;
   const firstVisitIndex = lastVisitIndex - moviesPerPage;
