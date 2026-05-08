@@ -138,7 +138,7 @@ const AccountSettings = () => {
           <Col>
             <Card>
               <CardHeader>
-                <h4>Account Settings</h4>
+                <h4>Details</h4>
               </CardHeader>
               <CardBody>
                 <Row>

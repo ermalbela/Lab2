@@ -34,9 +34,3 @@ ndryshme, duke siguruar qasje të plotë në të dhëna nga entitete të ndryshm
 =============================================================================================================
 =============================================================================================================
 =============================================================================================================
-
-
-=========================================MongoDB=============================================================
-Username: moviehouse1
-Password: zGLPOVfRoXreA7Tp
-ConnectionString: mongodb+srv://Ermal:zGLPOVfRoXreA7Tp@movie-house-cluster.pbrmjgn.mongodb.net/?retryWrites=true&w=majority&appName=Movie-House-Cluster
